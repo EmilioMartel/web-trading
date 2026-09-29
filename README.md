@@ -31,7 +31,11 @@ Abre http://localhost:5173
 | Tu usuario de Instagram, email | `src/config.js` → `SITE` |
 | Tu historia, rutina y valores (textos entre [corchetes]) | `src/config.js` → `ABOUT` |
 | Tu foto | Guarda `emilio.jpg` en `public/` y pon `photo: '/emilio.jpg'` |
-| Lecciones y tests | `src/data/m1-m2.js` … `src/data/m7-m8.js` |
+| Gestión del riesgo | `src/data/riesgo.js` |
+| Ruta de análisis técnico | `src/data/tecnico-1.js`, `tecnico-2.js`, `tecnico-3.js` |
+| Ruta de análisis institucional | `src/data/institucional.js` |
+| Fundamentos y complementos | `src/data/m1-m2.js` (fundamentos), `m3-m4.js` (indicadores), `m5-m6.js`, `m7-m8.js` (sistema profesional) |
+| Orden de módulos y rutas | `src/data/course.js` |
 | Colores | `src/styles.css` (variables al principio) |
 
 ### Añadir o editar lecciones
@@ -56,7 +60,30 @@ Cada lección es un objeto con bloques:
 }
 ```
 
-Widgets disponibles: `candle`, `structure`, `choch`, `sessions`, `pipvalue`, `rr`, `lotcalc`, `drawdown`, `ma`, `fib`, `montecarlo`, `compound`.
+Widgets disponibles: `candle`, `structure`, `choch`, `sessions`, `pipvalue`, `rr`, `lotcalc`, `drawdown`, `ma`, `fib`, `montecarlo`, `compound`, `riskunit`, `matrix`, `partials`, `checklist`.
+
+### Gráficos de ejemplo paso a paso
+
+Con `chart({...})` dibujas un gráfico ilustrativo. Las velas se generan a partir de los puntos de giro (`path: [[vela, precio], ...]`) y puedes añadir anotaciones y pasos:
+
+```js
+chart({
+  title: 'Cambio de estructura', symbol: 'EUR/USD · H4', seed: 3,
+  path: [[0, 30], [8, 55], [13, 44], [21, 70]],          // swings: [índice de vela, precio]
+  mods: { 13: { o: 50, c: 45 } },                         // retocar velas concretas (o, h, l, c)
+  ann: [
+    { t: 'zone', x1: 13, y1: 43, y2: 47, c: 'up', label: 'Order block', step: 1 },
+    { t: 'h', y: 55, x1: 8, label: 'Máximo previo' },     // línea horizontal
+    { t: 'line', x1: 0, y1: 30, x2: 13, y2: 44, ext: true }, // línea de tendencia
+    { t: 'fib', x1: 13, y1: 44, x2: 21, y2: 70, levels: [0, 0.618, 0.786, 1, -0.27] },
+    { t: 'trade', x: 21, entry: 60, sl: 54, tp: 78 },      // posición con SL/TP y ratio
+    { t: 'pt', x: 8, y: 55, text: 'HH' }, { t: 'txt', x: 5, y: 40, text: 'Texto' },
+  ],
+  steps: [ { to: 13, text: 'Paso 1…' }, { to: 21, text: 'Paso 2…' } ], // opcional
+})
+```
+
+Colores: `up`, `down`, `accent`, `violet`, `blue`, `muted`.
 
 ## Estructura
 

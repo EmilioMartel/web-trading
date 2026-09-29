@@ -10,3 +10,4 @@ export const ex = (title, x) => ({ t: 'ex', title, x })
 export const f = (x) => ({ t: 'f', x }) // fórmula
 export const w = (name) => ({ t: 'w', name }) // widget interactivo
 export const table = (head, rows) => ({ t: 'table', head, rows })
+export const chart = (spec) => ({ t: 'chart', spec }) // gráfico de ejemplo

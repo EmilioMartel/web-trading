@@ -4,10 +4,15 @@ import MonteCarlo from '../components/widgets/MonteCarlo.jsx'
 import SessionsWidget from '../components/widgets/SessionsWidget.jsx'
 import Compound from '../components/widgets/Compound.jsx'
 import { RRWidget, DrawdownWidget, FibWidget } from '../components/widgets/SmallWidgets.jsx'
+import { RiskUnitWidget, WinRateMatrix, PartialsWidget, ChecklistWidget } from '../components/widgets/RiskWidgets.jsx'
 
 const TOOLS = [
   { id: 'lotaje', label: 'Tamaño de posición', C: LotCalculator },
+  { id: 'unidad', label: 'Unidad de riesgo', C: RiskUnitWidget },
+  { id: 'checklist', label: 'Checklist', C: ChecklistWidget },
   { id: 'rr', label: 'Riesgo/beneficio', C: RRWidget },
+  { id: 'acierto', label: 'Acierto vs ratio', C: WinRateMatrix },
+  { id: 'parciales', label: 'Parciales', C: PartialsWidget },
   { id: 'simulador', label: 'Simulador', C: MonteCarlo },
   { id: 'sesiones', label: 'Sesiones', C: SessionsWidget },
   { id: 'fibonacci', label: 'Fibonacci', C: FibWidget },

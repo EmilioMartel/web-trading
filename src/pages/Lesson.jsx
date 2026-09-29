@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useRouter } from '../router.jsx'
-import { lessons, findLesson, findModule } from '../data/course.js'
+import { lessons, findLesson, findModule, findTrack } from '../data/course.js'
 import { useProgress, progress } from '../hooks/useProgress.js'
 import LessonContent from '../components/LessonContent.jsx'
 import NotFound from './NotFound.jsx'
@@ -33,7 +33,7 @@ export default function Lesson({ slug }) {
       <aside className="lesson-side">
         <Link to="/curso" className="back muted small">← Temario</Link>
         <div className="side-module">
-          <span className="module-n mono">Módulo {mod.n} · {mod.level}</span>
+          <span className="module-n mono">Módulo {mod.n} · {findTrack(mod.track)?.name}</span>
           <b>{mod.title}</b>
         </div>
         <ol className="side-list">

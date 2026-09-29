@@ -25,7 +25,8 @@ export const progress = {
   },
   setQuiz(moduleId, score, total) {
     const prev = state.quiz[moduleId]
-    const best = prev && prev.score > score ? prev : { score, total }
+    // Se guarda el mejor resultado; si el test cambió de tamaño, cuenta el nuevo
+    const best = prev && prev.total === total && prev.score > score ? prev : { score, total }
     save({ ...state, quiz: { ...state.quiz, [moduleId]: best } })
   },
   reset() { save({ done: [], quiz: {} }) },

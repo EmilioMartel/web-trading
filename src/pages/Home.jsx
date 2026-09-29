@@ -1,11 +1,12 @@
 import { Link } from '../router.jsx'
 import HeroChart from '../components/HeroChart.jsx'
-import { modules, lessons, levels, totalMinutes } from '../data/course.js'
+import { modules, lessons, tracks, totalMinutes } from '../data/course.js'
 import { useProgress } from '../hooks/useProgress.js'
 import { SITE } from '../config.js'
 
 export default function Home() {
-  const { done } = useProgress()
+  const { done: rawDone } = useProgress()
+  const done = rawDone.filter((d) => lessons.some((l) => l.slug === d))
   const next = lessons.find((l) => !done.includes(l.slug))
   const pct = Math.round((done.length / lessons.length) * 100)
 
@@ -16,7 +17,7 @@ export default function Home() {
           <div className="hero-copy">
             <span className="eyebrow"><span className="dot live" style={{ '--c': 'var(--up)' }} /> Curso 100% gratuito</span>
             <h1>Aprende trading <span className="grad">desde cero</span>, paso a paso.</h1>
-            <p className="lead">Forex, índices y oro explicados sin humo: de lo más básico a lo más avanzado, con herramientas interactivas para que entiendas cada concepto practicando.</p>
+            <p className="lead">Forex, índices y oro explicados sin humo: desde cero hasta el análisis técnico e institucional avanzado, con gráficos paso a paso, gestión del riesgo real y herramientas interactivas.</p>
             <div className="hero-cta">
               {done.length > 0 && next ? (
                 <Link to={`/curso/${next.slug}`} className="btn primary lg">Continuar: {next.title} →</Link>
@@ -51,18 +52,19 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <span className="eyebrow">La ruta</span>
-            <h2>Tres niveles. Un único camino.</h2>
-            <p className="muted">Cada módulo se apoya en el anterior. No necesitas ningún conocimiento previo.</p>
+            <span className="eyebrow">Cómo está organizado</span>
+            <h2>Una base común y dos caminos.</h2>
+            <p className="muted">Empieza por la base (incluida la gestión del riesgo, igual de importante que el análisis). Después elige tu ruta: técnica o institucional. Son dos formas distintas de leer el gráfico: domina una antes de mirar la otra.</p>
           </div>
-          <div className="levels">
-            {levels.map((lv, i) => {
-              const mods = modules.filter((m) => m.level === lv.name)
+          <div className="levels four">
+            {tracks.map((tr, i) => {
+              const mods = modules.filter((m) => m.track === tr.id)
+              const n = mods.reduce((a, m) => a + m.lessons.length, 0)
               return (
-                <div key={lv.name} className={`level card tone-${lv.color}`}>
-                  <span className="level-n mono">0{i + 1}</span>
-                  <h3>{lv.name}</h3>
-                  <p className="muted">{lv.desc}</p>
+                <div key={tr.id} className={`level card tone-${tr.color}`}>
+                  <span className="level-n mono">{i === 0 ? 'Paso 1' : i === 3 ? 'Extra' : 'Paso 2 · ruta ' + (i === 1 ? 'A' : 'B')}</span>
+                  <h3>{tr.name}</h3>
+                  <p className="muted">{tr.desc} · {n} lecciones</p>
                   <ul>
                     {mods.map((m) => <li key={m.id}><Link to={`/curso#${m.id}`}>{m.title}</Link></li>)}
                   </ul>
@@ -81,20 +83,20 @@ export default function Home() {
             <p className="muted">Mueve los controles y mira qué pasa. Es la forma más rápida de interiorizar conceptos como el tamaño de posición, el ratio riesgo/beneficio o por qué arriesgar poco es la clave.</p>
             <ul className="checks">
               <li>Calculadora de lotaje para Forex, oro e índices</li>
-              <li>Simulador de curva de capital (Monte Carlo)</li>
-              <li>Reloj de sesiones en tu hora local</li>
-              <li>Interés compuesto y drawdown</li>
+              <li>Unidad de riesgo, límites de pérdida y checklist de entrada</li>
+              <li>Tasa de acierto vs ratio y simulador de parciales</li>
+              <li>Simulador de curva de capital y reloj de sesiones</li>
             </ul>
             <Link to="/herramientas" className="btn primary">Abrir herramientas →</Link>
           </div>
           <div className="tool-tiles">
             {[
-              ['⚖️', 'Tamaño de posición', 'Cuántos lotes abrir para arriesgar exactamente tu 1%'],
-              ['🎲', 'Simulador', '40 futuros posibles de tu sistema'],
-              ['🕒', 'Sesiones', 'Qué mercado está abierto ahora'],
-              ['📈', 'Compuesto', 'El poder (y los límites) de reinvertir'],
-            ].map(([i, t, d]) => (
-              <Link key={t} to="/herramientas" className="tile card">
+              ['⚖️', 'Tamaño de posición', 'lotaje', 'Cuántos lotes abrir para arriesgar exactamente tu unidad de riesgo'],
+              ['✅', 'Checklist', 'checklist', '¿Cumple tu operación todas las condiciones?'],
+              ['🎯', 'Acierto vs ratio', 'acierto', 'Descubre si tu estrategia es rentable'],
+              ['🎲', 'Simulador', 'simulador', '40 futuros posibles de tu sistema'],
+            ].map(([i, t, id, d]) => (
+              <Link key={t} to={`/herramientas#${id}`} className="tile card">
                 <span className="tile-icon" aria-hidden>{i}</span>
                 <b>{t}</b>
                 <span className="muted small">{d}</span>

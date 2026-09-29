@@ -6,6 +6,7 @@ import MAWidget from './MAWidget.jsx'
 import LotCalculator from './LotCalculator.jsx'
 import MonteCarlo from './MonteCarlo.jsx'
 import Compound from './Compound.jsx'
+import { RiskUnitWidget, WinRateMatrix, PartialsWidget, ChecklistWidget } from './RiskWidgets.jsx'
 import { PipValueWidget, RRWidget, DrawdownWidget, FibWidget } from './SmallWidgets.jsx'
 
 export const WIDGETS = {
@@ -21,4 +22,8 @@ export const WIDGETS = {
   rr: RRWidget,
   drawdown: DrawdownWidget,
   fib: FibWidget,
+  riskunit: RiskUnitWidget,
+  matrix: WinRateMatrix,
+  partials: PartialsWidget,
+  checklist: ChecklistWidget,
 }

@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Link } from '../router.jsx'
-import { modules, lessons, levels } from '../data/course.js'
+import { modules, lessons, tracks, PASS_RATE } from '../data/course.js'
 import { useProgress, progress } from '../hooks/useProgress.js'
 
 export default function Course() {
-  const { done, quiz } = useProgress()
+  const { done: rawDone, quiz } = useProgress()
+  const done = rawDone.filter((d) => lessons.some((l) => l.slug === d))
   const pct = Math.round((done.length / lessons.length) * 100)
   const next = lessons.find((l) => !done.includes(l.slug))
 
@@ -24,7 +25,7 @@ export default function Course() {
           <div className="ring" style={{ '--p': pct }}><span className="mono">{pct}%</span></div>
           <div className="grow">
             <b>Tu progreso</b>
-            <p className="muted small">{done.length} de {lessons.length} lecciones · {Object.keys(quiz).length} de {modules.length} tests realizados</p>
+            <p className="muted small">{done.length} de {lessons.length} lecciones · {Object.keys(quiz).filter((k) => modules.some((m) => m.id === k)).length} de {modules.length} tests realizados</p>
             <div className="row gap">
               {next && <Link to={`/curso/${next.slug}`} className="btn primary sm">{done.length ? 'Continuar' : 'Empezar'} →</Link>}
               {done.length > 0 && <button className="btn ghost sm" onClick={() => { if (window.confirm('¿Seguro que quieres borrar tu progreso?')) progress.reset() }}>Reiniciar progreso</button>}
@@ -33,11 +34,13 @@ export default function Course() {
         </div>
       </header>
 
-      {levels.map((lv) => (
-        <section key={lv.name} className="level-block">
+      {tracks.map((lv) => (
+        <section key={lv.id} className="level-block">
           <h2 className={`level-title tone-${lv.color}`}><span className="pill">{lv.name}</span> {lv.desc}</h2>
+          {lv.id === 'tecnico' && <p className="track-note muted small">Ruta A. Elige una ruta y domínala antes de pasar a la otra: técnica e institucional leen el gráfico de forma distinta y pueden contradecirse.</p>}
+          {lv.id === 'institucional' && <p className="track-note muted small">Ruta B. Puedes empezarla directamente después de la base, sin haber hecho la ruta técnica.</p>}
           <div className="modules">
-            {modules.filter((m) => m.level === lv.name).map((m) => {
+            {modules.filter((m) => m.track === lv.id).map((m) => {
               const mDone = m.lessons.filter((l) => done.includes(l.slug)).length
               const q = quiz[m.id]
               return (
@@ -62,11 +65,11 @@ export default function Course() {
                         </li>
                       )
                     })}
-                    <li className={`quiz-link ${q ? 'done' : ''}`}>
+                    <li className={`quiz-link ${q && q.score / q.total >= PASS_RATE ? 'done' : ''}`}>
                       <Link to={`/curso/test/${m.id}`}>
-                        <span className="check" aria-hidden>{q ? '★' : '?'}</span>
+                        <span className="check" aria-hidden>{q && q.score / q.total >= PASS_RATE ? '★' : '?'}</span>
                         <span className="grow">Test del módulo</span>
-                        <span className="muted small mono">{q ? `${q.score}/${q.total}` : `${m.quiz.length} preguntas`}</span>
+                        <span className={`small mono ${q && q.score / q.total >= PASS_RATE ? 'passed' : 'muted'}`}>{q ? `${q.score}/${q.total}${q.score / q.total >= PASS_RATE ? ' ✓' : ''}` : `${m.quiz.length} preguntas`}</span>
                       </Link>
                     </li>
                   </ol>

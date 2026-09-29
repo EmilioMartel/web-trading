@@ -1,4 +1,5 @@
 import Rich from './Rich.jsx'
+import ChartExample from './ChartExample.jsx'
 import { WIDGETS } from './widgets/index.js'
 
 export default function LessonContent({ blocks }) {
@@ -19,6 +20,7 @@ export default function LessonContent({ blocks }) {
           </table>
         </div>
       )
+      case 'chart': return <ChartExample key={i} spec={b.spec} />
       case 'w': { const W = WIDGETS[b.name]; return W ? <W key={i} /> : null }
       default: return null
     }

@@ -2,7 +2,7 @@ export const fmt = (n, d = 2) =>
   Number.isFinite(n) ? n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—'
 
 export const money = (n, cur = 'USD', d = 2) =>
-  Number.isFinite(n) ? n.toLocaleString('es-ES', { style: 'currency', currency: cur, minimumFractionDigits: d, maximumFractionDigits: d }) : '—'
+  Number.isFinite(n) ? `${n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d })} ${cur === 'EUR' ? '€' : '$'}` : '—'
 
 export function rng(seed = 1) {
   let a = seed >>> 0

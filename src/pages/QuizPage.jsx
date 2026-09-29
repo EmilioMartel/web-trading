@@ -1,19 +1,21 @@
 import { Link } from '../router.jsx'
-import { modules, findModule } from '../data/course.js'
+import { modules, findModule, PASS_RATE } from '../data/course.js'
 import Quiz from '../components/Quiz.jsx'
 import NotFound from './NotFound.jsx'
 
 export default function QuizPage({ id }) {
   const mod = findModule(id)
   if (!mod) return <NotFound />
-  const next = modules[mod.n]
+  const sameTrack = modules.filter((m) => m.track === mod.track)
+  const idx = sameTrack.findIndex((m) => m.id === mod.id)
+  const next = sameTrack[idx + 1] || (mod.track === 'base' ? modules.find((m) => m.track === 'tecnico') : mod.track !== 'complementos' ? modules.find((m) => m.track === 'complementos') : null)
   return (
     <div className="container page narrow">
       <Link to={`/curso#${mod.id}`} className="back muted small">← Volver al módulo</Link>
       <header className="page-head">
         <span className="eyebrow">Test · Módulo {mod.n}</span>
         <h1>{mod.title}</h1>
-        <p className="muted">Responde las {mod.quiz.length} preguntas. Verás la explicación de cada respuesta al momento.</p>
+        <p className="muted">{mod.quiz.length} preguntas, una a una, con la explicación de cada respuesta al momento. Para dar el módulo por dominado necesitas al menos {Math.ceil(mod.quiz.length * PASS_RATE)} aciertos ({Math.round(PASS_RATE * 100)}%). El orden de preguntas y respuestas cambia en cada intento.</p>
       </header>
       <Quiz key={mod.id} module={mod} />
       <div className="lesson-nav">

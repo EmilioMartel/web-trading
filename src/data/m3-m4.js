@@ -73,7 +73,7 @@ export const m3 = {
         p('Esta es la fórmula que une todo lo anterior. Sabes cuánto quieres arriesgar (1%) y dónde va tu stop (distancia en pips). Solo falta saber **cuántos lotes** abrir.'),
         f('Lotes = Riesgo en dinero / (Distancia del stop en pips × Valor del pip por lote)'),
         ex('Ejemplo EUR/USD', 'Cuenta 10.000 $, riesgo 1% = 100 $. Stop a 25 pips. Valor del pip por lote estándar = 10 $. Lotes = 100 / (25 × 10) = **0,40 lotes**.'),
-        ex('Ejemplo oro', 'Cuenta 10.000 $, riesgo 100 $. Stop a 5 $ de distancia. 1 lote = 100 oz → 5 × 100 = 500 $ por lote. Lotes = 100 / 500 = **0,20 lotes**.'),
+        ex('Ejemplo oro', 'Cuenta 10.000 $, riesgo 100 $. Stop a 50 pips (5 $ de precio). En oro 1 lote = 10 $ por pip. Lotes = 100 / (50 × 10) = **0,20 lotes**.'),
         p('Pruébalo con la calculadora:'),
         w('lotcalc'),
         tip('Fíjate en que el mismo 1% de riesgo da tamaños muy distintos según la distancia del stop. **Stop amplio = menos lotes; stop ajustado = más lotes.** El riesgo en euros es siempre el mismo.'),
