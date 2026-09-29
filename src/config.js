@@ -2,8 +2,8 @@
 export const SITE = {
   brand: 'EmilioMartelFx',
   author: 'Emilio Martel',
-  instagram: 'https://instagram.com/emiliomartelfx', // ← cambia por tu usuario real
-  instagramHandle: '@emiliomartelfx',
+  instagram: 'https://www.instagram.com/emiliomartel.fx',
+  instagramHandle: '@emiliomartel.fx',
   email: 'emiliomtg@gmail.com',
 }
 
