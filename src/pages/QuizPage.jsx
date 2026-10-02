@@ -4,6 +4,7 @@ import Quiz from '../components/Quiz.jsx'
 import { useProgress } from '../hooks/useProgress.js'
 import { earnedBanners } from '../data/certificates.js'
 import NotFound from './NotFound.jsx'
+import AuthGate from '../components/AuthGate.jsx'
 
 export default function QuizPage({ id }) {
   const mod = findModule(id)
@@ -26,7 +27,9 @@ export default function QuizPage({ id }) {
           <span><b>{c.done}</b><br /><span className="muted small">Genera tu certificado con tu nombre →</span></span>
         </Link>
       ))}
-      <Quiz key={mod.id} module={mod} />
+      <AuthGate title="Crea tu cuenta gratis para hacer el test">
+        <Quiz key={mod.id} module={mod} />
+      </AuthGate>
       <div className="lesson-nav">
         <span />
         {next ? (

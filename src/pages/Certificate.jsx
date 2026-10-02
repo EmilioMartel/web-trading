@@ -8,10 +8,11 @@ import ShareBar from '../components/ShareBar.jsx'
 import { canvasToPdf } from '../pdf.js'
 import { SITE } from '../config.js'
 import { DEV } from '../components/DevPanel.jsx'
+import AuthGate from '../components/AuthGate.jsx'
+import Avatar from '../components/Avatar.jsx'
+import { useAuth } from '../auth.jsx'
 import { progress } from '../hooks/useProgress.js'
 
-const NAME_KEY = 'emfx-cert-name'
-const loadName = () => { try { return localStorage.getItem(NAME_KEY) || '' } catch { return '' } }
 
 function CertCard({ cert, quiz, name }) {
   const st = certStatus(cert, quiz)
@@ -57,7 +58,7 @@ function CertCard({ cert, quiz, name }) {
     : `He completado ${cert.id === 'base' ? 'la formación base de trading' : cert.id === 'complementos' ? 'los Complementos del trader' : `la ruta de ${cert.name}`} de ${SITE.instagramHandle}, superando con éxito todas las pruebas de evaluación`
 
   return (
-    <article className={`cert card ${st.complete ? 'ready' : ''} ${cert.premium ? 'premium' : ''}`} style={{ '--tone': cert.tone }}>
+    <article id={`cert-${cert.id}`} className={`cert card ${st.complete ? 'ready' : ''} ${cert.premium ? 'premium' : ''}`} style={{ '--tone': cert.tone }}>
       <div className="cert-head">
         <div>
           <span className="eyebrow cert-eyebrow">{cert.premium ? '🏆 ' : ''}{cert.label}</span>
@@ -102,7 +103,7 @@ function CertCard({ cert, quiz, name }) {
       {st.complete && (
         <div className="cert-actions">
           <p className="up small"><b>¡Completado el {fmtDate(st.lastDate)}!</b></p>
-          {!validName && <p className="note warn-note">Escribe tu nombre arriba (mínimo 3 letras) para personalizar y descargar tu certificado.</p>}
+          {!validName && <p className="note warn-note">Añade tu nombre y apellidos en <Link to="/perfil">tu perfil</Link> para personalizar y descargar tu certificado.</p>}
           {img && (
             <>
               <img className={`cert-preview ${busy ? 'busy' : ''}`} src={img.url} alt={`Certificado de ${cert.name}`} />
@@ -127,8 +128,8 @@ function CertCard({ cert, quiz, name }) {
 
 export default function Certificate() {
   const { quiz } = useProgress()
-  const [name, setName] = useState(loadName)
-  useEffect(() => { try { localStorage.setItem(NAME_KEY, name) } catch {} }, [name])
+  const { profile, photo } = useAuth()
+  const name = profile?.name || ''
 
   // El diploma va al final hasta que se consigue; entonces pasa a ser lo primero
   const master = CERTS.find((c) => c.premium)
@@ -141,15 +142,21 @@ export default function Certificate() {
         <span className="eyebrow">Certificados</span>
         <h1>Tu certificado de finalización</h1>
         <p className="lead muted">Cada bloque superado tiene su certificado con tu nombre, y al terminarlo todo consigues el diploma final del programa completo. Descárgalos, imprímelos o compártelos.</p>
-        <label className="field cert-name">
-          <span className="field-label">Nombre que aparecerá en el certificado</span>
-          <input className="text-input" value={name} maxLength={60} placeholder="Tu nombre y apellidos" onChange={(e) => setName(e.target.value)} />
-        </label>
       </header>
-      <div className="certs">
-        {ordered.map((c) => <CertCard key={c.id} cert={c} quiz={quiz} name={name} />)}
-      </div>
-      <p className="muted small">Tu progreso se guarda en este navegador. Formación gratuita con fines educativos: el certificado no constituye una titulación oficial.</p>
+      <AuthGate title="Crea tu cuenta para conseguir tus certificados" text="Los certificados se emiten a nombre de tu cuenta y quedan guardados en tu perfil. Registrarse es gratis.">
+        <div className="cert-name-box card">
+          <Avatar name={name} photo={photo} size={44} />
+          <div className="grow">
+            <span className="muted small">Tus certificados se emiten a nombre de</span>
+            <b>{name || 'Sin nombre'}</b>
+          </div>
+          <Link to="/perfil" className="btn ghost sm">Cambiar en mi perfil</Link>
+        </div>
+        <div className="certs">
+          {ordered.map((c) => <CertCard key={c.id} cert={c} quiz={quiz} name={name} />)}
+        </div>
+      </AuthGate>
+      <p className="muted small">Tu progreso y tus certificados se guardan en tu cuenta. Formación con fines educativos: el certificado no constituye una titulación oficial.</p>
     </div>
   )
 }

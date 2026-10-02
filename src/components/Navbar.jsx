@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useRouter } from '../router.jsx'
 import { useTheme } from '../hooks/useTheme.js'
 import { SITE } from '../config.js'
+import { useAuth } from '../auth.jsx'
+import Avatar from './Avatar.jsx'
 
 const LINKS = [
   ['/curso', 'Curso'],
@@ -14,6 +16,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { path } = useRouter()
+  const { ready, user, profile, photo } = useAuth()
 
   useEffect(() => setOpen(false), [path])
   useEffect(() => {
@@ -37,6 +40,9 @@ export default function Navbar() {
         <nav className="nav-links" aria-label="Principal">
           {LINKS.map(([to, label]) => <Link key={to} to={to}>{label}</Link>)}
           <a href={SITE.instagram} target="_blank" rel="noreferrer" className="nav-ig">Instagram ↗</a>
+          {ready && (user
+            ? <Link to="/perfil" className="nav-mobile-only">Mi perfil</Link>
+            : <Link to="/acceso" className="nav-mobile-only">Entrar o crear cuenta</Link>)}
         </nav>
         <div className="nav-actions">
           <button className="icon-btn" onClick={toggle} aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'} title="Cambiar tema">
@@ -46,7 +52,18 @@ export default function Navbar() {
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
             )}
           </button>
-          <Link to="/curso" className="btn primary sm hide-sm">Empezar gratis</Link>
+          {ready && !user && (
+            <Link to="/acceso" className="btn ghost sm nav-login" aria-label="Entrar o crear cuenta">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
+              <span>Entrar</span>
+            </Link>
+          )}
+          {!user && <Link to="/curso" className="btn primary sm hide-sm">Empezar gratis</Link>}
+          {user && (
+            <Link to="/perfil" className="nav-avatar" aria-label="Mi perfil" title={profile?.name || 'Mi perfil'}>
+              <Avatar name={profile?.name || user.email} photo={photo} size={38} />
+            </Link>
+          )}
           <button className="icon-btn burger" onClick={() => setOpen((o) => !o)} aria-label="Menú" aria-expanded={open}>
             <span /><span /><span />
           </button>
