@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { progress } from '../hooks/useProgress.js'
-import { PASS_RATE } from '../data/course.js'
+import { PASS_RATE, trackTone } from '../data/course.js'
+import ShareBar from './ShareBar.jsx'
+import { absUrl } from '../share.js'
+import { SITE } from '../config.js'
 
 // Baraja un array (Fisher–Yates) sin modificar el original
 function shuffle(arr) {
@@ -81,6 +84,18 @@ export default function Quiz({ module }) {
           </div>
           <button className="btn ghost" onClick={retry}>Repetir test</button>
         </div>
+
+        <ShareBar
+          title={passed ? 'Compártelo: te lo has ganado' : 'Comparte que estás aprendiendo'}
+          text={passed
+            ? `He superado con éxito el módulo «${module.title}» del curso gratuito de trading de ${SITE.instagramHandle}, demostrando los conocimientos adquiridos`
+            : `Estoy preparando el módulo «${module.title}» del curso gratuito de trading de ${SITE.instagramHandle}`}
+          url={absUrl('/curso')}
+          story={passed
+            ? { kicker: `Módulo ${module.n} superado`, title: module.title, sub: 'Superado con éxito, demostrando los conocimientos adquiridos', items: module.lessons.map((l) => l.title), badge: 'passed', tone: trackTone(module.track) }
+            : { kicker: 'Estoy aprendiendo', title: module.title, sub: 'Curso gratuito de trading · Forex, índices y oro', items: module.lessons.map((l) => l.title), badge: 'learning', tone: trackTone(module.track) }}
+          filename={`test-${module.id}.png`}
+        />
 
         {wrong.length > 0 && (
           <section className="quiz-review">

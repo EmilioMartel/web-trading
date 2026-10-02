@@ -9,12 +9,15 @@ import QuizPage from './pages/QuizPage.jsx'
 import Tools from './pages/Tools.jsx'
 import About from './pages/About.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Certificate from './pages/Certificate.jsx'
+import DevPanel from './components/DevPanel.jsx'
 
 const TITLES = {
   '/': 'EmilioMartelFx · Aprende trading desde cero',
   '/curso': 'Curso gratuito · EmilioMartelFx',
   '/herramientas': 'Herramientas · EmilioMartelFx',
   '/sobre-mi': 'Sobre mí · EmilioMartelFx',
+  '/certificado': 'Certificados · EmilioMartelFx',
 }
 
 function Routes() {
@@ -31,6 +34,7 @@ function Routes() {
   else if ((m = p.match(/^\/curso\/([\w-]+)$/))) page = <Lesson slug={m[1]} />
   else if (p === '/herramientas') page = <Tools />
   else if (p === '/sobre-mi') page = <About />
+  else if (p === '/certificado') page = <Certificate />
   else page = <NotFound />
 
   return <main key={p} className="fade-in">{page}</main>
@@ -43,6 +47,7 @@ export default function App() {
       <Navbar />
       <div id="contenido"><Routes /></div>
       <Footer />
+      <DevPanel />
     </Router>
   )
 }

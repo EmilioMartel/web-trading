@@ -1,9 +1,12 @@
 import { useEffect } from 'react'
 import { Link, useRouter } from '../router.jsx'
-import { lessons, findLesson, findModule, findTrack } from '../data/course.js'
+import { lessons, findLesson, findModule, findTrack, trackTone } from '../data/course.js'
 import { useProgress, progress } from '../hooks/useProgress.js'
 import LessonContent from '../components/LessonContent.jsx'
 import NotFound from './NotFound.jsx'
+import ShareBar from '../components/ShareBar.jsx'
+import { absUrl } from '../share.js'
+import { SITE } from '../config.js'
 
 export default function Lesson({ slug }) {
   const lesson = findLesson(slug)
@@ -68,6 +71,14 @@ export default function Lesson({ slug }) {
             {lastOfModule ? 'Completar y hacer el test →' : next ? 'Completar y siguiente →' : 'Terminar curso →'}
           </button>
         </div>
+
+        <ShareBar
+          title="¿Te ha servido esta lección? Compártela"
+          text={`Estoy aprendiendo trading gratis con ${SITE.instagramHandle}: «${lesson.title}»`}
+          url={absUrl(`/curso/${lesson.slug}`)}
+          story={{ kicker: 'Estoy aprendiendo', title: lesson.title, sub: `Módulo ${mod.n} · ${mod.title}`, items: lesson.takeaways, badge: 'learning', tone: trackTone(mod.track) }}
+          filename={`leccion-${lesson.slug}.png`}
+        />
 
         <nav className="lesson-nav">
           {prev ? <Link to={`/curso/${prev.slug}`} className="card nav-card"><span className="muted small">← Anterior</span><b>{prev.title}</b></Link> : <span />}

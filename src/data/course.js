@@ -1,9 +1,7 @@
-import { m1 } from './m1-m2.js'
-import { m4 } from './m3-m4.js'
+import { fundamentos } from './fundamentos.js'
+import { indicadores, fundamental, psicologia, sistemaProfesional } from './complementos.js'
 import { riesgo } from './riesgo.js'
 import { i1, i2, i3, i4 } from './institucional.js'
-import { m5, m6 } from './m5-m6.js'
-import { m8 } from './m7-m8.js'
 import { t1, t2 } from './tecnico-1.js'
 import { t3, t4 } from './tecnico-2.js'
 import { t5 } from './tecnico-3.js'
@@ -16,18 +14,18 @@ const extraQuiz = { ...extra1, ...extra2, ...extra3, ...extra4 }
 export const PASS_RATE = 0.8 // % mínimo para dar un módulo por dominado
 
 export const tracks = [
-  { id: 'base', name: 'Base', desc: 'Lo que todo trader necesita antes de elegir método', color: 'green' },
-  { id: 'tecnico', name: 'Análisis técnico', desc: 'Estructura, zonas, patrones, Fibonacci y confluencias', color: 'gold' },
-  { id: 'institucional', name: 'Análisis institucional', desc: 'Estructura interna, order blocks, imbalances y liquidez', color: 'violet' },
-  { id: 'complementos', name: 'Complementos', desc: 'Indicadores, fundamentales, psicología y tu sistema', color: 'blue' },
+  { id: 'base', name: 'Base', desc: 'Lo que todo trader necesita antes de elegir método', color: 'green', hex: '#22c55e' },
+  { id: 'tecnico', name: 'Análisis técnico', desc: 'Estructura, zonas, patrones, Fibonacci y confluencias', color: 'gold', hex: '#f5b301' },
+  { id: 'institucional', name: 'Análisis institucional', desc: 'Estructura interna, order blocks, imbalances y liquidez', color: 'violet', hex: '#a78bfa' },
+  { id: 'complementos', name: 'Complementos', desc: 'Indicadores, fundamentales, psicología y tu sistema', color: 'blue', hex: '#38bdf8' },
 ]
 
 const all = [
-  { ...m1, track: 'base' },
+  fundamentos,
   riesgo,
   t1, t2, t3, t4, t5,
   i1, i2, i3, i4,
-  { ...m4, track: 'complementos' }, { ...m5, track: 'complementos' }, { ...m6, track: 'complementos' }, { ...m8, track: 'complementos' },
+  indicadores, fundamental, psicologia, sistemaProfesional,
 ]
 const order = tracks.map((t) => t.id)
 export const modules = all
@@ -41,6 +39,5 @@ export const lessons = modules.flatMap((m) =>
 export const findLesson = (slug) => lessons.find((l) => l.slug === slug)
 export const findModule = (id) => modules.find((m) => m.id === id)
 export const findTrack = (id) => tracks.find((t) => t.id === id)
+export const trackTone = (id) => findTrack(id)?.hex || '#22c55e'
 export const totalMinutes = lessons.reduce((a, l) => a + l.minutes, 0)
-// compatibilidad
-export const levels = tracks

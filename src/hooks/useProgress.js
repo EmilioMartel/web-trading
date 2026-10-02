@@ -26,10 +26,21 @@ export const progress = {
   setQuiz(moduleId, score, total) {
     const prev = state.quiz[moduleId]
     // Se guarda el mejor resultado; si el test cambió de tamaño, cuenta el nuevo
-    const best = prev && prev.total === total && prev.score > score ? prev : { score, total }
+    // y la fecha en que se superó por primera vez (para el certificado)
+    const today = new Date().toISOString().slice(0, 10)
+    const keepPrev = prev && prev.total === total && prev.score >= score
+    const best = keepPrev ? prev : { score, total, date: prev && prev.total === total && prev.date ? prev.date : today }
+    if (!best.date) best.date = today
     save({ ...state, quiz: { ...state.quiz, [moduleId]: best } })
   },
   reset() { save({ done: [], quiz: {} }) },
+  // Solo para pruebas: marca lecciones y tests como completados
+  fill(lessonSlugs, moduleIds, total = 20) {
+    const date = new Date().toISOString().slice(0, 10)
+    const quiz = { ...state.quiz }
+    moduleIds.forEach((id) => { quiz[id] = { score: total, total, date } })
+    save({ done: [...new Set([...state.done, ...lessonSlugs])], quiz })
+  },
 }
 
 export function useProgress() {

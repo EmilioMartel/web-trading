@@ -1,10 +1,13 @@
 import { Link } from '../router.jsx'
 import { modules, findModule, PASS_RATE } from '../data/course.js'
 import Quiz from '../components/Quiz.jsx'
+import { useProgress } from '../hooks/useProgress.js'
+import { earnedBanners } from '../data/certificates.js'
 import NotFound from './NotFound.jsx'
 
 export default function QuizPage({ id }) {
   const mod = findModule(id)
+  const { quiz } = useProgress()
   if (!mod) return <NotFound />
   const sameTrack = modules.filter((m) => m.track === mod.track)
   const idx = sameTrack.findIndex((m) => m.id === mod.id)
@@ -17,6 +20,12 @@ export default function QuizPage({ id }) {
         <h1>{mod.title}</h1>
         <p className="muted">{mod.quiz.length} preguntas, una a una, con la explicación de cada respuesta al momento. Para dar el módulo por dominado necesitas al menos {Math.ceil(mod.quiz.length * PASS_RATE)} aciertos ({Math.round(PASS_RATE * 100)}%). El orden de preguntas y respuestas cambia en cada intento.</p>
       </header>
+      {earnedBanners(quiz, (c) => c.tracks.includes(mod.track)).map((c) => (
+        <Link key={c.id} to="/certificado" className="cert-banner card">
+          <span aria-hidden>🎓</span>
+          <span><b>{c.done}</b><br /><span className="muted small">Genera tu certificado con tu nombre →</span></span>
+        </Link>
+      ))}
       <Quiz key={mod.id} module={mod} />
       <div className="lesson-nav">
         <span />

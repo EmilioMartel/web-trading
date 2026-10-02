@@ -34,7 +34,9 @@ Abre http://localhost:5173
 | Gestión del riesgo | `src/data/riesgo.js` |
 | Ruta de análisis técnico | `src/data/tecnico-1.js`, `tecnico-2.js`, `tecnico-3.js` |
 | Ruta de análisis institucional | `src/data/institucional.js` |
-| Fundamentos y complementos | `src/data/m1-m2.js` (fundamentos), `m3-m4.js` (indicadores), `m5-m6.js`, `m7-m8.js` (sistema profesional) |
+| Fundamentos | `src/data/fundamentos.js` |
+| Complementos (indicadores, fundamental, psicología, sistema) | `src/data/complementos.js` |
+| Preguntas extra de los tests | `src/data/quiz-extra-1.js` … `quiz-extra-4.js` |
 | Orden de módulos y rutas | `src/data/course.js` |
 | Colores | `src/styles.css` (variables al principio) |
 
@@ -60,7 +62,7 @@ Cada lección es un objeto con bloques:
 }
 ```
 
-Widgets disponibles: `candle`, `structure`, `choch`, `sessions`, `pipvalue`, `rr`, `lotcalc`, `drawdown`, `ma`, `fib`, `montecarlo`, `compound`, `riskunit`, `matrix`, `partials`, `checklist`.
+Widgets disponibles: `candle`, `structure`, `sessions`, `pipvalue`, `rr`, `lotcalc`, `drawdown`, `ma`, `fib`, `montecarlo`, `compound`, `riskunit`, `matrix`, `partials`, `checklist`.
 
 ### Gráficos de ejemplo paso a paso
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from '../router.jsx'
 import { modules, lessons, tracks, PASS_RATE } from '../data/course.js'
 import { useProgress, progress } from '../hooks/useProgress.js'
+import { earnedBanners } from '../data/certificates.js'
 
 export default function Course() {
   const { done: rawDone, quiz } = useProgress()
@@ -28,10 +29,17 @@ export default function Course() {
             <p className="muted small">{done.length} de {lessons.length} lecciones · {Object.keys(quiz).filter((k) => modules.some((m) => m.id === k)).length} de {modules.length} tests realizados</p>
             <div className="row gap">
               {next && <Link to={`/curso/${next.slug}`} className="btn primary sm">{done.length ? 'Continuar' : 'Empezar'} →</Link>}
+              <Link to="/certificado" className="btn ghost sm">🎓 Certificados</Link>
               {done.length > 0 && <button className="btn ghost sm" onClick={() => { if (window.confirm('¿Seguro que quieres borrar tu progreso?')) progress.reset() }}>Reiniciar progreso</button>}
             </div>
           </div>
         </div>
+        {earnedBanners(quiz).map((c) => (
+          <Link key={c.id} to="/certificado" className="cert-banner card">
+            <span aria-hidden>🎓</span>
+            <span><b>{c.done}</b><br /><span className="muted small">Tu certificado está listo: descárgalo o compártelo →</span></span>
+          </Link>
+        ))}
       </header>
 
       {tracks.map((lv) => (

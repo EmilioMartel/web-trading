@@ -13,6 +13,7 @@ export default function Footer() {
           <div className="footer-links">
             <Link to="/curso">Curso</Link>
             <Link to="/herramientas">Herramientas</Link>
+            <Link to="/certificado">Certificados</Link>
             <Link to="/sobre-mi">Sobre mí</Link>
             <a href={SITE.instagram} target="_blank" rel="noreferrer">Instagram {SITE.instagramHandle}</a>
           </div>

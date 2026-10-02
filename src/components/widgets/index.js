@@ -1,4 +1,3 @@
-import { createElement } from 'react'
 import CandleWidget from './CandleWidget.jsx'
 import StructureWidget from './StructureWidget.jsx'
 import SessionsWidget from './SessionsWidget.jsx'
@@ -12,7 +11,6 @@ import { PipValueWidget, RRWidget, DrawdownWidget, FibWidget } from './SmallWidg
 export const WIDGETS = {
   candle: CandleWidget,
   structure: StructureWidget,
-  choch: () => createElement(StructureWidget, { initial: 'Cambio (CHoCH)' }),
   sessions: SessionsWidget,
   ma: MAWidget,
   lotcalc: LotCalculator,

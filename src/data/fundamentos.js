@@ -1,8 +1,11 @@
+/* =========================================================
+   BASE · Fundamentos del trading
+   ========================================================= */
 import { p, h, ul, ol, tip, warn, ex, f, w, table } from './blocks.js'
 
-export const m1 = {
+export const fundamentos = {
   id: 'fundamentos',
-  level: 'Principiante',
+  track: 'base',
   title: 'Fundamentos del trading',
   desc: 'Qué es el trading, qué mercados vamos a operar y el vocabulario básico que necesitas para entender todo lo demás.',
   lessons: [
@@ -190,116 +193,5 @@ export const m1 = {
     { q: '¿Qué determina cuánto dinero ganas o pierdes por pip?', options: ['El apalancamiento', 'El tamaño del lote', 'El broker', 'La sesión de mercado'], answer: 1, explain: 'El tamaño de la posición (lotes) fija el valor del pip. El apalancamiento solo cambia el margen necesario.' },
     { q: 'Quieres comprar si el precio retrocede hasta un soporte que está por debajo del precio actual. ¿Qué orden usas?', options: ['Buy Stop', 'Sell Limit', 'Buy Limit', 'Sell Stop'], answer: 2, explain: 'Buy Limit = compra a un precio más bajo que el actual.' },
     { q: '¿Cuál es el momento con más liquidez del día en Forex?', options: ['La sesión asiática', 'El fin de semana', 'El solapamiento Londres–Nueva York', 'La medianoche en Europa'], answer: 2, explain: 'Cuando Londres y Nueva York están abiertas a la vez se concentra el mayor volumen.' },
-  ],
-}
-
-export const m2 = {
-  id: 'analisis-tecnico',
-  level: 'Principiante',
-  title: 'Análisis técnico: leer el gráfico',
-  desc: 'Velas japonesas, soportes y resistencias, tendencias y temporalidades: la base para entender lo que hace el precio.',
-  lessons: [
-    {
-      slug: 'velas-japonesas',
-      title: 'Velas japonesas',
-      minutes: 6,
-      blocks: [
-        p('La vela japonesa es la forma más usada de representar el precio. Cada vela resume lo que ha pasado en un periodo de tiempo (1 minuto, 1 hora, 1 día…) con **4 datos**: apertura, cierre, máximo y mínimo.'),
-        w('candle'),
-        ul(
-          '**Cuerpo**: la distancia entre apertura y cierre.',
-          '**Mechas (sombras)**: hasta dónde llegó el precio pero no consiguió quedarse.',
-          '**Vela alcista (verde)**: cierra por encima de la apertura.',
-          '**Vela bajista (roja)**: cierra por debajo de la apertura.'
-        ),
-        tip('Una mecha larga cuenta una historia de **rechazo**: el precio fue a un nivel y fue expulsado. Una mecha inferior larga indica que los compradores defendieron la zona.'),
-      ],
-      takeaways: ['Cada vela = apertura, cierre, máximo y mínimo', 'Cuerpo grande = convicción; mecha larga = rechazo', 'El color indica si cerró por encima o por debajo de la apertura'],
-    },
-    {
-      slug: 'patrones-de-velas',
-      title: 'Patrones de velas clave',
-      minutes: 7,
-      blocks: [
-        p('Hay cientos de patrones con nombres exóticos, pero en la práctica te basta con conocer unos pocos y, sobre todo, **entender la lógica** que hay detrás.'),
-        h('Envolvente (engulfing)'),
-        p('Una vela cuyo cuerpo **envuelve por completo** el cuerpo de la anterior, en dirección contraria. Una envolvente alcista en un soporte indica que los compradores han tomado el control.'),
-        h('Pin bar / martillo / estrella fugaz'),
-        p('Vela de cuerpo pequeño con una **mecha muy larga** (2-3 veces el cuerpo). Señala rechazo de un nivel. Un martillo en soporte es alcista; una estrella fugaz en resistencia es bajista.'),
-        h('Doji'),
-        p('Apertura y cierre casi iguales. Indica **indecisión**. Por sí solo no dice nada; cobra sentido en niveles importantes.'),
-        h('Inside bar (vela interior)'),
-        p('Vela cuyo rango completo queda dentro de la anterior. Indica **compresión**: el mercado se toma una pausa antes de un posible movimiento.'),
-        warn('Un patrón de velas **fuera de contexto no vale nada**. Un martillo en mitad de la nada no significa lo mismo que un martillo en un soporte semanal. Primero la zona, luego la vela.'),
-      ],
-      takeaways: ['Envolvente = cambio de control', 'Pin bar = rechazo', 'Contexto (zona) > patrón'],
-    },
-    {
-      slug: 'soportes-y-resistencias',
-      title: 'Soportes y resistencias',
-      minutes: 7,
-      blocks: [
-        p('Son **zonas** donde históricamente el precio ha reaccionado. Reflejan la memoria del mercado: lugares donde hubo muchas órdenes.'),
-        ul(
-          '**Soporte**: zona por debajo del precio donde la compra ha frenado caídas.',
-          '**Resistencia**: zona por encima del precio donde la venta ha frenado subidas.'
-        ),
-        h('Cómo dibujarlos bien'),
-        ol(
-          'Empieza en temporalidades altas (diario, 4 horas).',
-          'Busca zonas con **varios toques claros** o con una reacción muy fuerte.',
-          'Dibuja **zonas (rectángulos), no líneas finas**: el precio rara vez respeta un número exacto.',
-          'Menos es más: 3-5 zonas relevantes por gráfico son suficientes.'
-        ),
-        h('Cambio de polaridad'),
-        p('Cuando una resistencia se rompe con fuerza, a menudo pasa a actuar como **soporte** (y viceversa). Es una de las ideas más útiles del análisis técnico.'),
-        ex('Ejemplo', 'El oro choca tres veces con 2.400 $. Finalmente lo rompe y sube a 2.430 $. Después retrocede a 2.400 $ y rebota: la antigua resistencia se ha convertido en soporte.'),
-        tip('Los **números redondos** (1,1000 en EUR/USD, 2.000 $ en oro, 20.000 en NAS100) suelen actuar como imanes y barreras psicológicas.'),
-      ],
-      takeaways: ['Soportes y resistencias son zonas, no líneas', 'Más toques o reacciones fuertes = zona más relevante', 'Resistencia rota tiende a convertirse en soporte'],
-    },
-    {
-      slug: 'tendencias-y-estructura',
-      title: 'Tendencias y estructura de mercado',
-      minutes: 7,
-      blocks: [
-        p('El precio no se mueve en línea recta sino en **ondas**: impulsos y retrocesos. Leer esas ondas es leer la **estructura**.'),
-        w('structure'),
-        ul(
-          '**Tendencia alcista**: máximos más altos (**HH**, Higher High) y mínimos más altos (**HL**, Higher Low).',
-          '**Tendencia bajista**: máximos más bajos (**LH**, Lower High) y mínimos más bajos (**LL**, Lower Low).',
-          '**Rango (lateral)**: el precio oscila entre un soporte y una resistencia sin dirección clara.'
-        ),
-        tip('"La tendencia es tu amiga". Al principio, opera **solo a favor de la tendencia**: compras en los retrocesos de una tendencia alcista, ventas en los retrocesos de una bajista.'),
-        h('¿Cuándo termina una tendencia?'),
-        p('Una tendencia alcista está en peligro cuando el precio **rompe el último mínimo más alto (HL)**. Esa es la primera señal de debilidad. Lo profundizaremos en el módulo avanzado con los conceptos de BOS y CHoCH.'),
-      ],
-      takeaways: ['Alcista = HH + HL; bajista = LH + LL', 'Opera a favor de la tendencia', 'Romper el último HL/LH es la primera alerta de cambio'],
-    },
-    {
-      slug: 'temporalidades',
-      title: 'Temporalidades (timeframes)',
-      minutes: 5,
-      blocks: [
-        p('El mismo activo puede estar en tendencia alcista en el gráfico diario y bajista en el de 15 minutos. **Ninguno está equivocado**: cada temporalidad cuenta una parte de la historia.'),
-        table(['Temporalidad', 'Uso típico'], [
-          ['Mensual / Semanal (MN / W1)', 'Contexto general y grandes zonas'],
-          ['Diario (D1)', 'Dirección principal y niveles clave'],
-          ['4 horas (H4)', 'Estructura para swing trading'],
-          ['1 hora (H1)', 'Estructura intradía y refinado'],
-          ['15 min / 5 min (M15 / M5)', 'Momento de entrada'],
-        ]),
-        tip('Regla práctica: usa **una temporalidad alta para la dirección** y **una o dos más bajas para ejecutar**. Por ejemplo: D1 → H1 → M15. Lo ampliaremos en el análisis multi-temporalidad.'),
-        warn('Las temporalidades muy bajas (M1, M5) tienen mucho "ruido". Al empezar, pasa la mayor parte del tiempo en H1 y superiores.'),
-      ],
-      takeaways: ['Cada temporalidad muestra una parte distinta', 'Temporalidad alta = dirección, baja = entrada', 'Evita las temporalidades muy bajas al empezar'],
-    },
-  ],
-  quiz: [
-    { q: 'Una vela con cuerpo pequeño y una mecha inferior muy larga en un soporte sugiere…', options: ['Que los vendedores dominan', 'Rechazo de precios bajos (compradores defendiendo)', 'Nada, las mechas no importan', 'Que el mercado está cerrado'], answer: 1, explain: 'La mecha inferior larga muestra que el precio bajó pero fue empujado de vuelta arriba: rechazo.' },
-    { q: 'Una tendencia alcista se define por…', options: ['Máximos y mínimos cada vez más bajos', 'Máximos y mínimos cada vez más altos', 'Velas verdes solamente', 'Precio por encima de 1,0000'], answer: 1, explain: 'HH (máximos más altos) y HL (mínimos más altos).' },
-    { q: '¿Cómo es mejor dibujar un soporte?', options: ['Como una línea exacta al pip', 'Como una zona', 'No hace falta dibujarlo', 'Solo en M1'], answer: 1, explain: 'El precio rara vez respeta un número exacto; una zona refleja mejor la realidad.' },
-    { q: 'Una resistencia rota con fuerza a menudo…', options: ['Desaparece', 'Pasa a actuar como soporte', 'Se convierte en doji', 'Obliga al broker a cerrar el mercado'], answer: 1, explain: 'Es el cambio de polaridad: resistencia rota → soporte.' },
-    { q: 'Para decidir la dirección general de tu operación deberías mirar…', options: ['El gráfico de 1 minuto', 'Una temporalidad alta como D1 o H4', 'Solo el precio en tiempo real', 'Instagram'], answer: 1, explain: 'La temporalidad alta da el contexto y la dirección; las bajas, el momento de entrada.' },
   ],
 }
