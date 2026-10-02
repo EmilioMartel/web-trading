@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /perfil
+Disallow: /acceso
+Disallow: /certificado
+
+Sitemap: https://emiliomartelfx.vercel.app/sitemap.xml

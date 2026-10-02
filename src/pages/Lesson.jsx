@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, useRouter } from '../router.jsx'
 import { lessons, findLesson, findModule, findTrack, trackTone } from '../data/course.js'
 import { useProgress, progress } from '../hooks/useProgress.js'
@@ -12,10 +11,6 @@ export default function Lesson({ slug }) {
   const lesson = findLesson(slug)
   const { done } = useProgress()
   const { navigate } = useRouter()
-
-  useEffect(() => {
-    if (lesson) document.title = `${lesson.title} · EmilioMartelFx`
-  }, [lesson])
 
   if (!lesson) return <NotFound />
   const mod = findModule(lesson.moduleId)

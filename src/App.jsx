@@ -7,6 +7,7 @@ import Course from './pages/Course.jsx'
 import NotFound from './pages/NotFound.jsx'
 import DevPanel from './components/DevPanel.jsx'
 import { AuthProvider } from './auth.jsx'
+import { routeMeta, applyMeta } from './seo.js'
 
 // El resto de páginas se descargan solo cuando se visitan (la web carga antes)
 const Lesson = lazy(() => import('./pages/Lesson.jsx'))
@@ -16,23 +17,17 @@ const About = lazy(() => import('./pages/About.jsx'))
 const Certificate = lazy(() => import('./pages/Certificate.jsx'))
 const Access = lazy(() => import('./pages/Access.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
+const Privacy = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.Privacy })))
+const LegalNotice = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.LegalNotice })))
 
 const Loading = () => <div className="container page"><div className="gate-loading" role="status"><span className="spinner" /> Cargando…</div></div>
-
-const TITLES = {
-  '/': 'EmilioMartelFx · Aprende trading desde cero',
-  '/curso': 'Curso gratuito · EmilioMartelFx',
-  '/herramientas': 'Herramientas · EmilioMartelFx',
-  '/sobre-mi': 'Sobre mí · EmilioMartelFx',
-  '/certificado': 'Certificados · EmilioMartelFx',
-  '/perfil': 'Mi perfil · EmilioMartelFx',
-}
 
 function Routes() {
   const { path } = useRouter()
   const p = path.replace(/\/+$/, '') || '/'
 
-  useEffect(() => { if (TITLES[p]) document.title = TITLES[p] }, [p])
+  // Título, descripción, URL canónica y datos para Google de cada página
+  useEffect(() => { applyMeta(routeMeta(p)) }, [p])
 
   let page
   let m
@@ -45,6 +40,8 @@ function Routes() {
   else if (p === '/certificado') page = <Certificate />
   else if (p === '/acceso') page = <Access />
   else if (p === '/perfil') page = <Profile />
+  else if (p === '/privacidad') page = <Privacy />
+  else if (p === '/aviso-legal') page = <LegalNotice />
   else page = <NotFound />
 
   return <main key={p} className="fade-in"><Suspense fallback={<Loading />}>{page}</Suspense></main>

@@ -713,3 +713,12 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 .pw-rules li { display: flex; gap: 8px; align-items: center; font-size: 0.82rem; color: var(--muted); transition: color 0.15s; }
 .pw-rules li span { width: 16px; text-align: center; font-weight: 700; }
 .pw-rules li.ok { color: var(--up); }
+
+/* Pie: enlaces legales y páginas legales */
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.footer-bottom p { margin: 0; }
+.footer-legal { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; }
+.footer-legal a { color: var(--muted); }
+.footer-legal a:hover { color: var(--text); }
+.legal h3 { font-size: 1.15rem; }
+.legal p, .legal li { font-size: 0.98rem; }

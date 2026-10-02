@@ -170,7 +170,7 @@ export default function Access() {
           </button>
         </form>
 
-        {mode === 'registro' && <p className="muted small">Al registrarte te enviaremos un correo para verificar tu dirección. Solo usamos tus datos para guardar tu progreso y emitir tus certificados.</p>}
+        {mode === 'registro' && <p className="muted small">Al crear tu cuenta aceptas el <Link to="/aviso-legal">aviso legal</Link> y la <Link to="/privacidad">política de privacidad</Link>. Solo usamos tus datos para guardar tu progreso y emitir tus certificados, y te enviaremos un correo para verificar tu dirección.</p>}
         {mode === 'recuperar' && <button type="button" className="link-btn" onClick={() => setMode('entrar')}>← Volver a iniciar sesión</button>}
       </div>
     </div>

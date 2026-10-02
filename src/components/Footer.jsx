@@ -22,7 +22,13 @@ export default function Footer() {
           <b>Aviso de riesgo:</b> los CFDs son instrumentos complejos y conllevan un alto riesgo de perder dinero rápidamente debido al apalancamiento. La mayoría de las cuentas de inversores minoristas pierden dinero al operar con CFDs. Debes considerar si comprendes cómo funcionan y si puedes permitirte asumir un alto riesgo de perder tu dinero.
           Todo el contenido de esta web es exclusivamente educativo y no constituye asesoramiento financiero ni recomendación de inversión. Rentabilidades pasadas no garantizan resultados futuros.
         </p>
-        <p className="muted small">© {new Date().getFullYear()} {SITE.author} · {SITE.brand}</p>
+        <div className="footer-bottom">
+          <p className="muted small">© {new Date().getFullYear()} {SITE.author} · {SITE.brand}</p>
+          <nav className="footer-legal" aria-label="Legal">
+            <Link to="/privacidad">Política de privacidad</Link>
+            <Link to="/aviso-legal">Aviso legal</Link>
+          </nav>
+        </div>
       </div>
     </footer>
   )
