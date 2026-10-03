@@ -22,7 +22,7 @@ function useNarrow() {
   return narrow
 }
 
-function PracticeChart({ sc, shown, dir, sl, tp, exit, done, onDrag }) {
+function PracticeChart({ sc, frame, shown, dir, sl, tp, exit, done, onDrag }) {
   const narrow = useNarrow()
   // En móvil el lienzo es más estrecho y alto para que las velas y los textos se lean bien
   const W = narrow ? 400 : 720
@@ -33,13 +33,15 @@ function PracticeChart({ sc, shown, dir, sl, tp, exit, done, onDrag }) {
   const n = sc.candles.length
   const vis = sc.candles.slice(0, shown)
 
-  // Escala vertical: solo con lo visible (no se debe intuir el futuro) + niveles de la operación
-  const ys = vis.flatMap((c) => [c.h, c.l])
-  if (dir !== 'none' && sl != null) ys.push(sl, tp)
-  if (done && sc.keyLevel) ys.push(sc.keyLevel)
-  let min = Math.min(...ys), max = Math.max(...ys)
-  const pad = (max - min) * 0.08
-  min -= pad; max += pad
+  // Escala vertical fija (calculada solo con lo visible al empezar, para no intuir el futuro).
+  // No cambia mientras se arrastran el stop y el objetivo; solo se amplía si las velas nuevas se salen.
+  let min = frame.min, max = frame.max
+  if (shown > VISIBLE || done) {
+    const ys = vis.slice(VISIBLE).flatMap((c) => [c.h, c.l])
+    if (done && sc.keyLevel) ys.push(sc.keyLevel)
+    const span = frame.max - frame.min
+    if (ys.length) { min = Math.min(min, Math.min(...ys) - span * 0.04); max = Math.max(max, Math.max(...ys) + span * 0.04) }
+  }
   const slot = (W - padL - padR) / n
   const X = (i) => padL + (i + 0.5) * slot
   const XR = W - padR
@@ -51,14 +53,33 @@ function PracticeChart({ sc, shown, dir, sl, tp, exit, done, onDrag }) {
     const rect = svg.current.getBoundingClientRect()
     return toPrice(((e.clientY - rect.top) / rect.height) * H)
   }
-  const start = (kind) => (e) => {
+  // Arrastre relativo: la línea se mueve lo mismo que el puntero desde donde se cogió (sin saltos)
+  const start = (kind, value) => (e) => {
     if (!onDrag) return
     e.preventDefault()
-    drag.current = kind
-    e.currentTarget.setPointerCapture?.(e.pointerId)
+    drag.current = { kind, from: value, ptr: pointerPrice(e) }
+    setDragging(kind)
+    svg.current.setPointerCapture?.(e.pointerId)
   }
-  const move = (e) => { if (drag.current) onDrag(drag.current, pointerPrice(e)) }
-  const end = () => { drag.current = null }
+  const move = (e) => {
+    const d = drag.current
+    if (!d) return
+    e.preventDefault()
+    onDrag(d.kind, d.from + (pointerPrice(e) - d.ptr))
+  }
+  const end = () => { drag.current = null; setDragging(null) }
+  const [dragging, setDragging] = useState(null)
+
+  // Móvil: al tocar una línea no debe desplazarse la página
+  useEffect(() => {
+    const el = svg.current
+    if (!el) return
+    const onStart = (e) => { if (e.target.closest?.('.pr-handle')) e.preventDefault() }
+    const onMove = (e) => { if (drag.current) e.preventDefault() }
+    el.addEventListener('touchstart', onStart, { passive: false })
+    el.addEventListener('touchmove', onMove, { passive: false })
+    return () => { el.removeEventListener('touchstart', onStart); el.removeEventListener('touchmove', onMove) }
+  }, [])
 
   const ticks = [0.15, 0.38, 0.62, 0.85].map((g) => min + g * (max - min))
   const xE = X(VISIBLE - 1) + slot / 2
@@ -66,7 +87,7 @@ function PracticeChart({ sc, shown, dir, sl, tp, exit, done, onDrag }) {
   const trade = dir !== 'none' && sl != null
 
   return (
-    <svg ref={svg} viewBox={`0 0 ${W} ${H}`} className={`pr-svg ${narrow ? 'narrow' : ''}`} onPointerMove={move} onPointerUp={end} onPointerCancel={end} role="img" aria-label={`Gráfico de ${sc.inst.name}`}>
+    <svg ref={svg} viewBox={`0 0 ${W} ${H}`} className={`pr-svg ${narrow ? 'narrow' : ''} ${onDrag ? 'editing' : ''} ${dragging ? 'dragging' : ''}`} onPointerMove={move} onPointerUp={end} onPointerCancel={end} role="img" aria-label={`Gráfico de ${sc.inst.name}`}>
       {ticks.map((v) => (
         <g key={v}>
           <line x1="0" x2={XR} y1={Y(v)} y2={Y(v)} stroke="var(--line)" />
@@ -112,9 +133,9 @@ function PracticeChart({ sc, shown, dir, sl, tp, exit, done, onDrag }) {
 
       {/* Líneas arrastrables de stop y objetivo */}
       {trade && [['tp', tp, 'var(--up)', 'TP'], ['sl', sl, 'var(--down)', 'SL']].map(([k, v, c, lab]) => (
-        <g key={k} className={onDrag ? 'pr-handle' : ''} onPointerDown={start(k)}>
+        <g key={k} className={onDrag ? `pr-handle ${dragging === k ? 'active' : ''}` : ''} onPointerDown={start(k, v)}>
           <line x1={xE} x2={XR} y1={Y(v)} y2={Y(v)} stroke={c} strokeWidth="2" strokeDasharray={onDrag ? '' : '5 3'} />
-          {onDrag && <rect x={xE} y={Y(v) - 14} width={XR - xE} height="28" fill="transparent" />}
+          {onDrag && <rect x={xE} y={Y(v) - (narrow ? 22 : 16)} width={W - xE} height={narrow ? 44 : 32} fill="transparent" />}
           <rect x={XR + 2} y={Y(v) - 10} width={padR - 4} height="20" rx="5" fill={c} />
           <text x={XR + padR / 2} y={Y(v) + 4} textAnchor="middle" className="pr-tag">{lab} {fmtPrice(sc.inst, v)}</text>
           {onDrag && <g transform={`translate(${xE + (XR - xE) / 2},${Y(v)})`}><rect x="-17" y="-8" width="34" height="16" rx="8" fill="var(--bg-elev)" stroke={c} /><text y="4" textAnchor="middle" className="pr-grip" fill={c}>⇕</text></g>}
@@ -189,8 +210,18 @@ export default function Practice() {
     setPhase('plan')
   }, [phase, sc]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onDrag = useCallback((kind, price) => {
+  // Marco de precios del gráfico: rango visible con margen arriba y abajo para colocar stop y objetivo
+  const frame = useMemo(() => {
+    const vis = sc.candles.slice(0, VISIBLE)
+    const lo = Math.min(...vis.map((c) => c.l)), hi = Math.max(...vis.map((c) => c.h))
+    const span = hi - lo
+    return { min: lo - span * 0.3, max: hi + span * 0.3 }
+  }, [sc])
+
+  const onDrag = useCallback((kind, raw) => {
     const minDist = sc.atr * 0.15
+    const edge = (frame.max - frame.min) * 0.02
+    const price = Math.min(frame.max - edge, Math.max(frame.min + edge, raw))
     if (kind === 'sl') {
       const v = dir === 'long' ? Math.min(price, sc.entry - minDist) : Math.max(price, sc.entry + minDist)
       setSl(v)
@@ -198,9 +229,9 @@ export default function Practice() {
       const v = dir === 'long' ? Math.max(price, sc.entry + minDist) : Math.min(price, sc.entry - minDist)
       setTp(v)
     }
-  }, [dir, sc])
+  }, [dir, sc, frame])
 
-  const setRR = (k) => setTp(dir === 'long' ? sc.entry + k * risk : sc.entry - k * risk)
+  const setRR = (k) => onDrag('tp', dir === 'long' ? sc.entry + k * risk : sc.entry - k * risk)
   const nudgeSl = (sign) => onDrag('sl', sl + sign * sc.atr * 0.2)
 
   function play(d = dir, s = sl, t = tp) {
@@ -283,7 +314,7 @@ export default function Practice() {
         </div>
         {hint && phase === 'decide' && <p className="pr-hint small">Antes de decidir, fíjate en tres cosas: ¿hay máximos y mínimos ordenados (tendencia) o el precio rebota entre dos niveles (rango)? ¿Está el precio en una zona importante? ¿Dónde pondrías el stop para que el ruido normal no te saque?</p>}
 
-        <PracticeChart sc={sc} shown={shown} dir={dir} sl={sl} tp={tp} exit={res?.sim?.exit} done={phase === 'done'} onDrag={phase === 'plan' ? onDrag : null} />
+        <PracticeChart sc={sc} frame={frame} shown={shown} dir={dir} sl={sl} tp={tp} exit={res?.sim?.exit} done={phase === 'done'} onDrag={phase === 'plan' ? onDrag : null} />
 
         {phase === 'decide' && (
           <div className="pr-actions">

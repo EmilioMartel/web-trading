@@ -870,3 +870,8 @@ section[id], article[id] { scroll-margin-top: 88px; }
 .pr-svg.narrow .pr-tag { font-size: 9.5px; }
 .pr-svg.narrow .pr-axis { font-size: 10px; }
 .pr-svg.narrow .pr-future { font-size: 44px; }
+.pr-svg.editing .pr-handle { cursor: grab; }
+.pr-svg.dragging, .pr-svg.dragging .pr-handle { cursor: grabbing; }
+.pr-handle.active line { stroke-width: 3; }
+.pr-handle.active rect[rx="8"] { stroke-width: 2; }
+.pr-svg.editing { touch-action: none; }
