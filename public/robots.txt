@@ -3,5 +3,6 @@ Allow: /
 Disallow: /perfil
 Disallow: /acceso
 Disallow: /certificado
+Disallow: /repaso
 
 Sitemap: https://emiliomartelfx.vercel.app/sitemap.xml

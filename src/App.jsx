@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import Course from './pages/Course.jsx'
 import NotFound from './pages/NotFound.jsx'
 import DevPanel from './components/DevPanel.jsx'
+import Achievements from './components/Achievements.jsx'
 import { AuthProvider } from './auth.jsx'
 import { routeMeta, applyMeta } from './seo.js'
 
@@ -17,6 +18,7 @@ const About = lazy(() => import('./pages/About.jsx'))
 const Certificate = lazy(() => import('./pages/Certificate.jsx'))
 const Access = lazy(() => import('./pages/Access.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
+const Review = lazy(() => import('./pages/Review.jsx'))
 const Privacy = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.Privacy })))
 const LegalNotice = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.LegalNotice })))
 
@@ -40,6 +42,7 @@ function Routes() {
   else if (p === '/certificado') page = <Certificate />
   else if (p === '/acceso') page = <Access />
   else if (p === '/perfil') page = <Profile />
+  else if (p === '/repaso') page = <Review />
   else if (p === '/privacidad') page = <Privacy />
   else if (p === '/aviso-legal') page = <LegalNotice />
   else page = <NotFound />
@@ -56,6 +59,7 @@ export default function App() {
         <div id="contenido"><Routes /></div>
         <Footer />
         <DevPanel />
+        <Achievements />
       </Router>
     </AuthProvider>
   )

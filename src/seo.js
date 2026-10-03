@@ -37,6 +37,7 @@ const STATIC = {
   '/certificado': { title: `Certificados · ${BRAND}`, desc: HOME_DESC, noindex: true },
   '/acceso': { title: `Entrar o crear cuenta · ${BRAND}`, desc: HOME_DESC, noindex: true },
   '/perfil': { title: `Mi perfil · ${BRAND}`, desc: HOME_DESC, noindex: true },
+  '/repaso': { title: `Repaso de fallos · ${BRAND}`, desc: HOME_DESC, noindex: true },
 }
 
 // Datos de una ruta. Las rutas desconocidas se tratan como 404.

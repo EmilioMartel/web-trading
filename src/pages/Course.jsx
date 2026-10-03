@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { Link } from '../router.jsx'
 import { modules, lessons, tracks, PASS_RATE } from '../data/course.js'
-import { useProgress, progress } from '../hooks/useProgress.js'
+import { useProgress, progress, dueReviews } from '../hooks/useProgress.js'
 import { earnedBanners } from '../data/certificates.js'
 
 export default function Course() {
-  const { done: rawDone, quiz } = useProgress()
+  const { done: rawDone, quiz, review } = useProgress()
+  const due = dueReviews(review).length
   const done = rawDone.filter((d) => lessons.some((l) => l.slug === d))
   const pct = Math.round((done.length / lessons.length) * 100)
   const next = lessons.find((l) => !done.includes(l.slug))
@@ -34,6 +35,12 @@ export default function Course() {
             </div>
           </div>
         </div>
+        {due > 0 && (
+          <Link to="/repaso" className="cert-banner card review-banner">
+            <span aria-hidden>🔁</span>
+            <span><b>Tienes {due} {due === 1 ? 'pregunta' : 'preguntas'} para repasar hoy</b><br /><span className="muted small">Son preguntas que fallaste en los tests. Repasarlas te lleva un par de minutos →</span></span>
+          </Link>
+        )}
         {earnedBanners(quiz).map((c) => (
           <Link key={c.id} to="/certificado" className="cert-banner card">
             <span aria-hidden>🎓</span>

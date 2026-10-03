@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { progress } from '../hooks/useProgress.js'
+import { progress, qHash } from '../hooks/useProgress.js'
+import { Link } from '../router.jsx'
 import { PASS_RATE, trackTone } from '../data/course.js'
 import ShareBar from './ShareBar.jsx'
 import { absUrl } from '../share.js'
@@ -45,7 +46,7 @@ export default function Quiz({ module }) {
     if (pos < total - 1) setPos((p) => p + 1)
     else {
       const finalScore = qs.reduce((a, q, i) => a + (answers[i] === q.answer ? 1 : 0), 0)
-      progress.setQuiz(module.id, finalScore, total)
+      progress.setQuiz(module.id, finalScore, total, qs.map((q, i) => ({ i, h: qHash(q.q), ok: answers[i] === q.answer })))
       setFinished(true)
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -109,6 +110,10 @@ export default function Quiz({ module }) {
               </div>
             ))}
             <p className="muted small">Consejo: vuelve a las lecciones del módulo antes de repetir. Las preguntas y las opciones cambian de orden en cada intento.</p>
+            <Link to="/repaso" className="review-note card">
+              <span aria-hidden>🔁</span>
+              <span><b>{wrong.length === 1 ? 'Esta pregunta se ha añadido' : `Estas ${wrong.length} preguntas se han añadido`} a tu repaso</b><br /><span className="muted small">Te las volveremos a preguntar mañana y en los próximos días hasta que las domines.</span></span>
+            </Link>
           </section>
         )}
       </div>

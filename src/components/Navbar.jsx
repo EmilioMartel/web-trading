@@ -4,6 +4,7 @@ import { useTheme } from '../hooks/useTheme.js'
 import { SITE } from '../config.js'
 import { useAuth } from '../auth.jsx'
 import Avatar from './Avatar.jsx'
+import { useProgress, streakInfo, dueReviews } from '../hooks/useProgress.js'
 
 const LINKS = [
   ['/curso', 'Curso'],
@@ -17,6 +18,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { path } = useRouter()
   const { ready, user, profile, photo } = useAuth()
+  const { days, review } = useProgress()
+  const streak = streakInfo(days)
+  const due = dueReviews(review).length
 
   useEffect(() => setOpen(false), [path])
   useEffect(() => {
@@ -39,13 +43,15 @@ export default function Navbar() {
         </Link>
         <nav className="nav-links" aria-label="Principal">
           {LINKS.map(([to, label]) => <Link key={to} to={to}>{label}</Link>)}
+          {user && <Link to="/repaso">Repaso{due > 0 && <span className="nav-count" aria-label={`${due} pendientes`}>{due}</span>}</Link>}
           <a href={SITE.instagram} target="_blank" rel="noreferrer" className="nav-ig">Instagram ↗</a>
+          <button type="button" className="nav-theme-link" onClick={toggle}>{theme === 'dark' ? '☀️ Modo claro' : '🌙 Modo oscuro'}</button>
           {ready && (user
             ? <Link to="/perfil" className="nav-mobile-only">Mi perfil</Link>
             : <Link to="/acceso" className="nav-mobile-only">Entrar o crear cuenta</Link>)}
         </nav>
         <div className="nav-actions">
-          <button className="icon-btn" onClick={toggle} aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'} title="Cambiar tema">
+          <button className="icon-btn theme-btn" onClick={toggle} aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'} title="Cambiar tema">
             {theme === 'dark' ? (
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
             ) : (
@@ -59,6 +65,11 @@ export default function Navbar() {
             </Link>
           )}
           {!user && <Link to="/curso" className="btn primary sm hide-sm">Empezar gratis</Link>}
+          {user && streak.current > 0 && (
+            <Link to="/perfil#insignias" className={`streak-chip ${streak.activeToday ? '' : 'pending'}`} title={streak.activeToday ? `Racha de ${streak.current} días` : `Racha de ${streak.current} días: aprende algo hoy para no perderla`}>
+              <span aria-hidden>🔥</span><b>{streak.current}</b>
+            </Link>
+          )}
           {user && (
             <Link to="/perfil" className="nav-avatar" aria-label="Mi perfil" title={profile?.name || 'Mi perfil'}>
               <Avatar name={profile?.name || user.email} photo={photo} size={38} />

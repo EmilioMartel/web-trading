@@ -10,6 +10,7 @@ import { CERTS, certStatus, fmtDate, passed } from '../data/certificates.js'
 import { fileToAvatar } from '../lib/avatar.js'
 import Avatar from '../components/Avatar.jsx'
 import { PasswordInput, PasswordRules } from './Access.jsx'
+import { StreakCard, ReviewCard, BadgeGrid } from '../components/Gamification.jsx'
 import { cleanName, nameError, passwordOk } from '../lib/validation.js'
 
 // Al confirmar con la contraseña actual, un fallo de credenciales significa que esa contraseña no es correcta
@@ -179,6 +180,12 @@ export default function Profile() {
   const { navigate } = useRouter()
 
   useEffect(() => { if (ready && !loading && !user && !currentUser()) navigate('/acceso?volver=/perfil') }, [ready, loading, user, navigate])
+  // Si se llega con #insignias (desde el aviso o la racha), baja hasta esa sección al cargar
+  const loaded = !!(user && profile)
+  useEffect(() => {
+    if (!loaded || !window.location.hash) return
+    setTimeout(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }, [loaded])
 
   if (!ready) return <div className="container page narrow"><p className="muted">Las cuentas no están configuradas todavía.</p></div>
   if (!user || !profile) return <div className="container page narrow"><div className="gate-loading" role="status"><span className="spinner" /> Cargando tu perfil…</div></div>
@@ -207,6 +214,15 @@ export default function Profile() {
         <div className="stat card"><b className="mono">{lessonsDone}<small>/{lessons.length}</small></b><span>Lecciones vistas</span></div>
         <div className="stat card"><b className="mono">{testsOk}<small>/{modules.length}</small></b><span>Tests superados</span></div>
         <div className="stat card"><b className="mono">{earned}<small>/{CERTS.length}</small></b><span>Certificados</span></div>
+      </section>
+
+      <section className="card profile-block" id="insignias">
+        <h2>Racha e insignias</h2>
+        <div className="gami-top">
+          <StreakCard />
+          <ReviewCard />
+        </div>
+        <BadgeGrid />
       </section>
 
       <section className="card profile-block">
