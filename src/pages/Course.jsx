@@ -30,6 +30,7 @@ export default function Course() {
             <p className="muted small">{done.length} de {lessons.length} lecciones · {Object.keys(quiz).filter((k) => modules.some((m) => m.id === k)).length} de {modules.length} tests realizados</p>
             <div className="row gap">
               {next && <Link to={`/curso/${next.slug}`} className="btn primary sm">{done.length ? 'Continuar' : 'Empezar'} →</Link>}
+              <Link to="/practica" className="btn ghost sm">🕹️ Practicar</Link>
               <Link to="/certificado" className="btn ghost sm">🎓 Certificados</Link>
               {done.length > 0 && <button className="btn ghost sm" onClick={() => { if (window.confirm('¿Seguro que quieres borrar tu progreso?')) progress.reset() }}>Reiniciar progreso</button>}
             </div>

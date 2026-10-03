@@ -9,10 +9,11 @@ import { useSyncExternalStore } from 'react'
   - days:   días con actividad (para la racha)
   - stats:  contadores { reviewOk, reviewFail, mastered }
   - badges: insignias conseguidas { id: fecha }
+  - practice: modo práctica { d: decisiones, good: decisiones de calidad, n: operaciones, wins, r: suma de R, hist: últimos R }
   Sin sesión se guarda solo en este navegador; con sesión, además en Firestore (ver auth.jsx).
 */
 const KEY = 'emfx-progress-v1'
-const EMPTY = { done: [], quiz: {}, review: {}, days: [], stats: {}, badges: {} }
+const EMPTY = { done: [], quiz: {}, review: {}, days: [], stats: {}, badges: {}, practice: {} }
 const listeners = new Set()
 
 // Días (en la hora local del alumno) entre repasos según la caja en la que está la pregunta.
@@ -28,6 +29,7 @@ function normalize(p) {
     days: Array.isArray(p?.days) ? p.days : [],
     stats: obj(p?.stats),
     badges: obj(p?.badges),
+    practice: obj(p?.practice),
   }
 }
 function load() {
@@ -91,6 +93,7 @@ export function mergeProgress(a, b) {
     days: [...new Set([...a.days, ...b.days])].sort().slice(-400),
     stats,
     badges,
+    practice: (b.practice.d || 0) > (a.practice.d || 0) ? b.practice : a.practice,
   }
 }
 
@@ -158,6 +161,20 @@ export const progress = {
     const review = { ...state.review }
     keys.forEach((k) => delete review[k])
     emit({ ...state, review })
+  },
+  // Resultado de un escenario del modo práctica (r = null si decidió no operar)
+  recordPractice(r, quality) {
+    const p = state.practice
+    const traded = r !== null
+    const practice = {
+      d: (p.d || 0) + 1,
+      good: (p.good || 0) + (quality ? 1 : 0),
+      n: (p.n || 0) + (traded ? 1 : 0),
+      wins: (p.wins || 0) + (traded && r > 0 ? 1 : 0),
+      r: Math.round(((p.r || 0) + (traded ? r : 0)) * 100) / 100,
+      hist: traded ? [...(p.hist || []), Math.round(r * 100) / 100].slice(-40) : (p.hist || []),
+    }
+    emit({ ...state, practice, days: withToday(state.days) })
   },
   awardBadges(ids) {
     if (!ids.length) return

@@ -9,6 +9,7 @@ import { useProgress, streakInfo, dueReviews } from '../hooks/useProgress.js'
 const LINKS = [
   ['/curso', 'Curso'],
   ['/herramientas', 'Herramientas'],
+  ['/practica', 'Práctica'],
   ['/sobre-mi', 'Sobre mí'],
 ]
 
@@ -64,7 +65,7 @@ export default function Navbar() {
               <span>Entrar</span>
             </Link>
           )}
-          {!user && <Link to="/curso" className="btn primary sm hide-sm">Empezar gratis</Link>}
+          {!user && <Link to="/curso" className="btn primary sm hide-sm nav-cta">Empezar gratis</Link>}
           {user && streak.current > 0 && (
             <Link to="/perfil#insignias" className={`streak-chip ${streak.activeToday ? '' : 'pending'}`} title={streak.activeToday ? `Racha de ${streak.current} días` : `Racha de ${streak.current} días: aprende algo hoy para no perderla`}>
               <span aria-hidden>🔥</span><b>{streak.current}</b>

@@ -139,7 +139,7 @@ p { margin: 0 0 1em; }
 .nav.open .burger span:nth-child(2) { opacity: 0; }
 .nav.open .burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-@media (max-width: 820px) {
+@media (max-width: 980px) {
   .burger { display: flex; }
   .hide-sm { display: none; }
   .nav-actions { margin-left: auto; }
@@ -595,7 +595,7 @@ input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius
 
 /* ---------- Cuentas: acceso, perfil y avisos ---------- */
 .nav-mobile-only { display: none; }
-@media (max-width: 820px) { .nav-mobile-only { display: block; color: var(--accent-text) !important; font-weight: 600 !important; } }
+@media (max-width: 980px) { .nav-mobile-only { display: block; color: var(--accent-text) !important; font-weight: 600 !important; } }
 .nav-avatar { display: inline-flex; border-radius: 50%; transition: box-shadow 0.15s; }
 .nav-avatar:hover, .nav-avatar.active { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent); }
 
@@ -815,3 +815,58 @@ section[id], article[id] { scroll-margin-top: 88px; }
   .streak-chip { padding: 4px 7px; gap: 2px; }
 }
 .nav .logo svg { flex-shrink: 0; }
+
+/* ---------- Modo práctica ---------- */
+.pr-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+.pr-stats .stat { position: relative; }
+.pr-spark { width: 100%; max-width: 160px; height: 34px; margin-top: 4px; }
+
+.pr-board { padding: 16px; display: grid; gap: 12px; margin-bottom: 14px; }
+.pr-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.pr-sym { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pr-sym b { font-size: 1.15rem; }
+.pr-hint { margin: 0; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+.pr-svg { width: 100%; height: auto; display: block; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.pr-axis { font: 500 11px 'JetBrains Mono', monospace; fill: var(--muted); }
+.pr-future { font: 800 64px Inter, sans-serif; fill: var(--muted); opacity: 0.25; }
+.pr-label { font: 600 11px Inter, sans-serif; }
+.pr-tag { font: 700 10.5px 'JetBrains Mono', monospace; fill: #fff; }
+.pr-tag.inv { fill: var(--bg); }
+.pr-grip { font: 700 12px Inter, sans-serif; }
+.pr-handle { cursor: ns-resize; touch-action: none; }
+.pr-svg .cin { animation: candleIn 0.25s ease both; }
+.pr-actions { display: grid; gap: 10px; justify-items: start; }
+.pr-actions p { margin: 0; }
+.pr-btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn.pr-buy { background: var(--up); color: #fff; min-width: 130px; justify-content: center; }
+.btn.pr-sell { background: var(--down); color: #fff; min-width: 130px; justify-content: center; }
+.pr-plan { display: flex; gap: 10px; flex-wrap: wrap; }
+.pr-plan-item { display: grid; gap: 2px; padding: 8px 14px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); min-width: 110px; }
+.pr-result { display: grid; gap: 14px; }
+.pr-result .quiz-result p { margin: 0; }
+.pr-eval h3 { margin: 6px 0 8px; font-size: 1.05rem; }
+.pr-eval p { margin: 0 0 8px; }
+.pr-checks { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
+.pr-checks li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; border-radius: 10px; background: var(--bg-soft); font-size: 0.92rem; }
+.pr-checks li span { font-weight: 800; width: 16px; flex-shrink: 0; }
+.pr-checks li.ok span { color: var(--up); }
+.pr-checks li.ko span { color: var(--down); }
+.pr-checks li.meh span { color: var(--accent-text); }
+@media (max-width: 640px) {
+  .pr-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .pr-board { padding: 10px; margin-left: -6px; margin-right: -6px; }
+  .pr-btns .btn.pr-buy, .pr-btns .btn.pr-sell { flex: 1; min-width: 0; }
+  .pr-plan-item { flex: 1; min-width: 0; padding: 8px 10px; }
+}
+
+/* Pantallas medianas: se ocultan extras de la barra para que quepan los enlaces */
+@media (max-width: 1200px) and (min-width: 981px) {
+  .nav .nav-cta { display: none; }
+  .nav-links a { padding: 8px 10px; }
+}
+@media (min-width: 981px) and (max-width: 1100px) {
+  .nav-links .nav-ig { display: none; }
+}
+.pr-svg.narrow .pr-tag { font-size: 9.5px; }
+.pr-svg.narrow .pr-axis { font-size: 10px; }
+.pr-svg.narrow .pr-future { font-size: 44px; }
