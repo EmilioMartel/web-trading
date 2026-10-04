@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { firebaseReady, loadFirebase } from './lib/firebase.js'
 import { progress, useProgress } from './hooks/useProgress.js'
 import { CERTS, certStatus } from './data/certificates.js'
+import { getSource } from './lib/source.js'
+
+const todayStr = () => new Date().toISOString().slice(0, 10)
 
 /*
   Cuentas de usuario con Firebase (el SDK se carga aparte, ver lib/fb.js):
@@ -78,6 +81,9 @@ export function AuthProvider({ children }) {
               updatedAt: FB.serverTimestamp(),
               progress: progress.get(),
               certificates: {},
+              lastSeen: todayStr(),
+              verified: !!user.emailVerified,
+              source: getSource() || {},
             })
             snap = await FB.getDoc(ref)
           }
@@ -93,6 +99,11 @@ export function AuthProvider({ children }) {
             const av = await FB.getDoc(avatarRef(user.uid))
             setPhoto(av.exists() ? av.data().photo || null : null)
           }
+          // Última actividad (una vez al día) y estado de verificación, para el panel privado
+          const meta = {}
+          if (data.lastSeen !== todayStr()) meta.lastSeen = todayStr()
+          if (data.verified !== !!user.emailVerified) meta.verified = !!user.emailVerified
+          if (Object.keys(meta).length) { FB.updateDoc(ref, meta).catch(() => {}); Object.assign(data, meta) }
           setSt({ ready: true, loading: false, user, profile: data, verified: user.emailVerified, error: '' })
         } catch (e) {
           console.error('No se pudo cargar el perfil', e)
@@ -169,7 +180,9 @@ export async function resendVerification() {
 export async function reloadUser() {
   const F = await fb()
   await F.auth.currentUser.reload()
-  return F.auth.currentUser.emailVerified
+  const v = F.auth.currentUser.emailVerified
+  if (v) F.updateDoc(userRef(F.auth.currentUser.uid), { verified: true }).catch(() => {})
+  return v
 }
 
 export async function updateName(name) {
@@ -206,6 +219,14 @@ export async function deleteAccount(password) {
   await FB.deleteDoc(avatarRef(u.uid))
   await FB.deleteDoc(userRef(u.uid))
   await FB.deleteUser(u)
+}
+
+/* ---------- Panel privado ---------- */
+// Lee todos los perfiles (las reglas de Firestore solo lo permiten a la cuenta de administración)
+export async function adminLoadUsers() {
+  const F = await fb()
+  const snap = await F.getDocs(F.collection(F.db, 'users'))
+  return snap.docs.map((d) => ({ uid: d.id, ...d.data() }))
 }
 
 /* ---------- Mensajes de error en español ---------- */

@@ -10,17 +10,25 @@ service cloud.firestore {
     function isOwner(uid) {
       return request.auth != null && request.auth.uid == uid;
     }
+    // Administrador: solo puede LEER los perfiles (para el panel privado /admin), nunca modificarlos
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'emiliomtg@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
 
     match /users/{uid} {
       function validProfile() {
         let d = request.resource.data;
-        return d.keys().hasOnly(['name', 'email', 'photo', 'createdAt', 'updatedAt', 'progress', 'certificates'])
+        return d.keys().hasOnly(['name', 'email', 'photo', 'createdAt', 'updatedAt', 'progress', 'certificates', 'lastSeen', 'verified', 'source'])
           && d.name is string && d.name.size() <= 60
           && (!('photo' in d) || d.photo == null || (d.photo is string && d.photo.size() < 200000))
           && (!('progress' in d) || d.progress is map)
-          && (!('certificates' in d) || d.certificates is map);
+          && (!('certificates' in d) || d.certificates is map)
+          && (!('source' in d) || d.source is map);
       }
-      allow read, delete: if isOwner(uid);
+      allow read: if isOwner(uid) || isAdmin();
+      allow delete: if isOwner(uid);
       allow create, update: if isOwner(uid) && validProfile();
     }
 

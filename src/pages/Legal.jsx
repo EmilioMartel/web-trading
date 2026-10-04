@@ -34,6 +34,8 @@ export function Privacy() {
         <li><strong>Datos de tu cuenta:</strong> nombre y apellidos y correo electrónico. La contraseña la gestiona el sistema de autenticación de forma cifrada: nosotros no podemos verla.</li>
         <li><strong>Foto de perfil</strong>, solo si decides subirla. Se guarda reducida a 160×160 píxeles.</li>
         <li><strong>Tu progreso en el curso:</strong> lecciones vistas, resultados de los tests, fechas y certificados conseguidos.</li>
+        <li><strong>Actividad en la web:</strong> fecha de tu última visita y si has verificado tu correo.</li>
+        <li><strong>Origen de tu primera visita:</strong> la web desde la que llegaste (por ejemplo, Instagram o Google) y la página por la que entraste, para saber qué canales funcionan.</li>
         <li><strong>Datos técnicos</strong> que generan automáticamente los servidores al visitar la web (dirección IP, navegador, fecha y hora), con fines de seguridad y funcionamiento.</li>
       </ul>
       <p>Si usas la web <strong>sin cuenta</strong>, tu progreso y tus preferencias (como el tema claro u oscuro) se guardan solo en tu navegador y no se envían a ningún servidor.</p>
@@ -44,6 +46,7 @@ export function Privacy() {
         <li>Guardar y sincronizar tu progreso entre dispositivos.</li>
         <li>Emitir tus certificados con tu nombre.</li>
         <li>Enviarte correos del propio servicio: verificación de la dirección y recuperación de contraseña.</li>
+        <li>Conocer de forma estadística cómo se usa el curso (qué lecciones se ven, qué preguntas se fallan, de dónde llegan los alumnos) para mejorarlo.</li>
       </ul>
       <p>No usamos tus datos para publicidad, no hacemos perfiles comerciales y no los vendemos ni cedemos a terceros.</p>
 
@@ -51,7 +54,7 @@ export function Privacy() {
       <ul>
         <li><strong>Ejecución del servicio</strong> que solicitas al crear tu cuenta (art. 6.1.b del RGPD): cuenta, progreso, certificados y correos del servicio.</li>
         <li><strong>Consentimiento</strong> (art. 6.1.a del RGPD) para la foto de perfil, que puedes quitar cuando quieras.</li>
-        <li><strong>Interés legítimo</strong> (art. 6.1.f del RGPD) en mantener la web segura y evitar abusos.</li>
+        <li><strong>Interés legítimo</strong> (art. 6.1.f del RGPD) en mantener la web segura, evitar abusos y mejorar el curso con estadísticas de uso.</li>
       </ul>
 
       <h3>5. Cuánto tiempo los conservamos</h3>
@@ -61,7 +64,7 @@ export function Privacy() {
       <p>Para que la web funcione usamos estos proveedores, que tratan los datos solo siguiendo nuestras instrucciones:</p>
       <ul>
         <li><strong>Google (Firebase Authentication y Cloud Firestore):</strong> inicio de sesión y almacenamiento de tu perfil y tu progreso.</li>
-        <li><strong>Vercel:</strong> alojamiento de la web.</li>
+        <li><strong>Vercel:</strong> alojamiento de la web y estadísticas de visitas (Vercel Web Analytics). Estas estadísticas no usan cookies ni identifican a personas concretas: solo cuentan visitas de forma agregada (páginas vistas, país, tipo de dispositivo y web de procedencia).</li>
         <li><strong>Google Fonts:</strong> las tipografías de la web se descargan desde servidores de Google, por lo que tu navegador les comunica tu dirección IP.</li>
       </ul>
       <p>Algunos de estos proveedores pueden tratar datos fuera del Espacio Económico Europeo, en Estados Unidos. En ese caso, la transferencia se ampara en el Marco de Privacidad de Datos UE-EE. UU. o en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>
@@ -75,7 +78,7 @@ export function Privacy() {
       <p>Si consideras que no hemos atendido bien tu solicitud, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noreferrer">aepd.es</a>).</p>
 
       <h3>8. Cookies y almacenamiento local</h3>
-      <p>Esta web <strong>no usa cookies de publicidad ni de analítica</strong>. Solo guarda en tu navegador información técnica necesaria para funcionar: tu sesión iniciada, el tema elegido y tu progreso. Al ser estrictamente necesaria para el servicio que pides, no requiere tu consentimiento (art. 22.2 de la LSSI).</p>
+      <p>Esta web <strong>no usa cookies de publicidad ni de analítica</strong> (las estadísticas de visitas funcionan sin cookies). Solo guarda en tu navegador información técnica necesaria para funcionar: tu sesión iniciada, el tema elegido, tu progreso y la web desde la que llegaste la primera vez. Al ser estrictamente necesaria para el servicio que pides, no requiere tu consentimiento (art. 22.2 de la LSSI).</p>
 
       <h3>9. Edad mínima</h3>
       <p>El contenido está dirigido a personas mayores de 18 años. Si eres menor, no crees una cuenta.</p>

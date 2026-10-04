@@ -9,6 +9,7 @@ import { tracks, modules, lessons } from '../data/course.js'
 import { CERTS, certStatus, fmtDate, passed } from '../data/certificates.js'
 import { fileToAvatar } from '../lib/avatar.js'
 import Avatar from '../components/Avatar.jsx'
+import { SITE } from '../config.js'
 import { PasswordInput, PasswordRules } from './Access.jsx'
 import { StreakCard, ReviewCard, BadgeGrid } from '../components/Gamification.jsx'
 import { cleanName, nameError, passwordOk } from '../lib/validation.js'
@@ -277,6 +278,7 @@ export default function Profile() {
       <section className="card profile-block">
         <h2>Sesión</h2>
         <div className="row gap">
+          {user.email?.toLowerCase() === SITE.adminEmail.toLowerCase() && <Link to="/admin" className="btn primary">📊 Panel privado</Link>}
           <button className="btn ghost" onClick={() => logOut().then(() => navigate('/'))}>Cerrar sesión</button>
           {done.length + Object.keys(quiz).length > 0 && (
             <button className="btn ghost" onClick={() => { if (window.confirm('¿Seguro que quieres borrar todo tu progreso? Perderás también los certificados conseguidos.')) progress.reset() }}>Reiniciar progreso</button>

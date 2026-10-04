@@ -6,6 +6,7 @@ export const SITE = {
   instagramHandle: '@emiliomartel.fx',
   email: 'emiliomtg@gmail.com',
   url: 'https://emiliomartelfx.vercel.app', // dirección pública de la web (sin / al final)
+  adminEmail: 'emiliomtg@gmail.com', // cuenta con acceso al panel privado /admin (debe coincidir con firestore.rules)
 }
 
 // ✏️ Tu historia. Sustituye los textos entre [corchetes] por los tuyos.

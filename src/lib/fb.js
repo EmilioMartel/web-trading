@@ -10,7 +10,7 @@ import {
   sendPasswordResetEmail, sendEmailVerification, updateProfile, EmailAuthProvider,
   reauthenticateWithCredential, updatePassword, deleteUser,
 } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, deleteField } from 'firebase/firestore/lite'
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, deleteField, collection, getDocs } from 'firebase/firestore/lite'
 
 export function init(config) {
   const app = initializeApp(config)
@@ -22,6 +22,6 @@ export function init(config) {
     onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
     sendPasswordResetEmail, sendEmailVerification, updateProfile, EmailAuthProvider,
     reauthenticateWithCredential, updatePassword, deleteUser,
-    doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, deleteField,
+    doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, deleteField, collection, getDocs,
   }
 }

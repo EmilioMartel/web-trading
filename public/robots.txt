@@ -4,5 +4,6 @@ Disallow: /perfil
 Disallow: /acceso
 Disallow: /certificado
 Disallow: /repaso
+Disallow: /admin
 
 Sitemap: https://emiliomartelfx.vercel.app/sitemap.xml

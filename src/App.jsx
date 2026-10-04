@@ -20,6 +20,7 @@ const Access = lazy(() => import('./pages/Access.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
 const Review = lazy(() => import('./pages/Review.jsx'))
 const Practice = lazy(() => import('./pages/Practice.jsx'))
+const Admin = lazy(() => import('./pages/Admin.jsx'))
 const Privacy = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.Privacy })))
 const LegalNotice = lazy(() => import('./pages/Legal.jsx').then((m) => ({ default: m.LegalNotice })))
 
@@ -45,6 +46,7 @@ function Routes() {
   else if (p === '/perfil') page = <Profile />
   else if (p === '/repaso') page = <Review />
   else if (p === '/practica') page = <Practice />
+  else if (p === '/admin') page = <Admin />
   else if (p === '/privacidad') page = <Privacy />
   else if (p === '/aviso-legal') page = <LegalNotice />
   else page = <NotFound />
