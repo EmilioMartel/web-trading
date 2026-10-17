@@ -4,6 +4,7 @@ import Quiz from '../components/Quiz.jsx'
 import { useProgress } from '../hooks/useProgress.js'
 import { earnedBanners } from '../data/certificates.js'
 import NotFound from './NotFound.jsx'
+import { SITE } from '../config.js'
 import AuthGate from '../components/AuthGate.jsx'
 
 export default function QuizPage({ id }) {
@@ -35,7 +36,7 @@ export default function QuizPage({ id }) {
         {next ? (
           <Link to={`/curso/${next.lessons[0].slug}`} className="card nav-card right"><span className="muted small">Siguiente módulo →</span><b>{next.title}</b></Link>
         ) : (
-          <Link to="/sobre-mi" className="card nav-card right"><span className="muted small">¡Curso completado! 🎉</span><b>Conóceme y sígueme</b></Link>
+          <a href={SITE.instagram} target="_blank" rel="noreferrer" className="card nav-card right"><span className="muted small">¡Curso completado! 🎉</span><b>Sígueme en Instagram ↗</b></a>
         )}
       </div>
     </div>

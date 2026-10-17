@@ -34,7 +34,6 @@ const STATIC = {
     title: `Simulador de trading gratis: practica sin riesgo · ${BRAND}`,
     desc: 'Entrena tus decisiones con escenarios de mercado simulados: decide si comprar, vender o no operar, coloca stop y objetivo y descubre qué pasó después.',
   },
-  '/sobre-mi': { title: `Sobre mí · ${BRAND}`, desc: `Conoce a ${SITE.author}, trader y creador de ${BRAND}: su historia, su forma de operar y por qué comparte este curso gratis.` },
   '/privacidad': { title: `Política de privacidad · ${BRAND}`, desc: `Qué datos personales trata ${BRAND}, para qué, durante cuánto tiempo y cómo ejercer tus derechos.` },
   '/aviso-legal': { title: `Aviso legal · ${BRAND}`, desc: `Información legal sobre el titular de ${BRAND} y las condiciones de uso de la web.` },
   // Páginas privadas o de cuenta: no se indexan
@@ -88,7 +87,7 @@ const COURSE_LD = {
   inLanguage: 'es',
   isAccessibleForFree: true,
   educationalLevel: 'Principiante a avanzado',
-  provider: { '@type': 'Person', name: SITE.author, url: `${SITE_URL}/sobre-mi`, sameAs: [SITE.instagram] },
+  provider: { '@type': 'Person', name: SITE.author, url: `${SITE_URL}/`, sameAs: [SITE.instagram] },
   offers: { '@type': 'Offer', price: 0, priceCurrency: 'EUR', category: 'Free' },
   hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'Online', courseWorkload: `PT${Math.round(lessons.reduce((a, l) => a + (l.minutes || 0), 0) / 60)}H` },
   syllabusSections: modules.map((m) => ({ '@type': 'Syllabus', name: m.title, description: m.desc })),

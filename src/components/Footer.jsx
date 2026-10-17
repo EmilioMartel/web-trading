@@ -15,7 +15,6 @@ export default function Footer() {
             <Link to="/herramientas">Herramientas</Link>
             <Link to="/practica">Práctica</Link>
             <Link to="/certificado">Certificados</Link>
-            <Link to="/sobre-mi">Sobre mí</Link>
             <a href={SITE.instagram} target="_blank" rel="noreferrer">Instagram {SITE.instagramHandle}</a>
           </div>
         </div>

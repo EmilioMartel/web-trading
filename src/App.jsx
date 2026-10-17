@@ -14,7 +14,6 @@ import { routeMeta, applyMeta } from './seo.js'
 const Lesson = lazy(() => import('./pages/Lesson.jsx'))
 const QuizPage = lazy(() => import('./pages/QuizPage.jsx'))
 const Tools = lazy(() => import('./pages/Tools.jsx'))
-const About = lazy(() => import('./pages/About.jsx'))
 const Certificate = lazy(() => import('./pages/Certificate.jsx'))
 const Access = lazy(() => import('./pages/Access.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
@@ -40,7 +39,6 @@ function Routes() {
   else if ((m = p.match(/^\/curso\/test\/([\w-]+)$/))) page = <QuizPage id={m[1]} />
   else if ((m = p.match(/^\/curso\/([\w-]+)$/))) page = <Lesson slug={m[1]} />
   else if (p === '/herramientas') page = <Tools />
-  else if (p === '/sobre-mi') page = <About />
   else if (p === '/certificado') page = <Certificate />
   else if (p === '/acceso') page = <Access />
   else if (p === '/perfil') page = <Profile />

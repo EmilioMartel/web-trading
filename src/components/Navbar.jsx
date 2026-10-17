@@ -10,7 +10,6 @@ const LINKS = [
   ['/curso', 'Curso'],
   ['/herramientas', 'Herramientas'],
   ['/practica', 'Práctica'],
-  ['/sobre-mi', 'Sobre mí'],
 ]
 
 export default function Navbar() {
